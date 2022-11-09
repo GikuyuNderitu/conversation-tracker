@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option go_package = "atypicaldev.com/conversation/notes/v1/api";
+
+package notes.v1.api;
+
+service NotesService {
+  rpc GetNotes(GetNotesRequest) returns (GetNotesResponse) {}
+
+  rpc GetConversation(GetConversationRequest) returns (GetConversationResponse) {}
+
+  rpc ListConversations(ListConversationsRequest) returns (ListConversationsResponse) {}
+}
+
+message GetNotesRequest {
+  string note_id = 1;
+}
+
+message GetNotesResponse {
+  repeated Note notes = 1;
+}
+
+message Note {
+  // Required. Id of the note.
+  string id = 1;
+
+  // Required. Id of the note's conversation.
+  string conversation_id = 2;
+
+  // If populated, the parent this note is a child of
+  Note parent = 3;
+
+  // Required. The content of the note
+  string content = 4;
+
+  string reply = 5;
+
+  repeated Note children = 6;
+}
+
+message GetConversationRequest {
+  string conversation_id = 1;
+}
+
+message GetConversationResponse {
+  // Required. The conversation for a given convo_id.
+  Conversation conversation = 1;
+}
+
+message Conversation {
+  // Required.  
+  string id = 1;
+
+  // Top level list of notes in a conversation
+  repeated Note notes = 2;
+
+  string title = 3;
+}
+
+message ListConversationsRequest {}
+
+message ListConversationsResponse {
+  repeated Conversation conversations = 1;
+}
