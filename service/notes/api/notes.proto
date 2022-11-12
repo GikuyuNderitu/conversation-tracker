@@ -7,11 +7,21 @@ package notes.v1.api;
 service NotesService {
   rpc GetNotes(GetNotesRequest) returns (GetNotesResponse) {}
 
+  rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {}
+
   rpc GetConversation(GetConversationRequest) returns (GetConversationResponse) {}
 
   rpc ListConversations(ListConversationsRequest) returns (ListConversationsResponse) {}
 
   rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {}
+}
+
+message GetNoteRequest {
+  string note_id = 1;
+}
+
+message GetNoteResponse {
+  Note note = 1;
 }
 
 message GetNotesRequest {
