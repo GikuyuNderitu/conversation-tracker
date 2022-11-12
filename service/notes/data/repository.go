@@ -1,9 +1,7 @@
 package data
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 
 	pb "atypicaldev.com/conversation/notes/api"
@@ -15,33 +13,14 @@ var (
 	ErrQuery           = errors.New("error occurred processing the SurrealDB query")
 )
 
-type note struct {
-	id, convoId, content, reply, parent string
-	children                            []*note // nolint
-}
-type convo struct {
-	id, title string
-	notes     []*note
-}
-
-const (
-	convoTable           = "convos"
-	noteTable            = "notes"
-	todoTable            = "todos"
-	conversationDBPrefix = "conversations"
-	conversationNSPrefix = conversationDBPrefix
-	statusOK             = "OK"
-)
-
-var (
-	todoQuery = fmt.Sprintf("SELECT * FROM %s WHERE id = $id", todoTable)
-)
-
 type NotesRepository interface {
+	// Read operations
 	GetNote(noteId string) *pb.Note
 	GetNotes(noteId string) []*pb.Note
 	ListConversations() []pb.Conversation
 	GetConversation(convoId string) *pb.Conversation
+
+	// Create operations
 	CreateNote(request *pb.CreateNoteRequest) *pb.Note
 }
 
@@ -86,7 +65,6 @@ func (r noteRepository) GetNotes(noteId string) []*pb.Note {
 	db := r.openConnection()
 	defer db.Close()
 
-	// todoData, err := db.Select(todoTable)
 	todoData, err := db.Query(todoQuery, map[string]interface{}{
 		"id": noteId,
 	})
@@ -152,45 +130,6 @@ func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
 	return &note
 }
 
-func convertDbNotesListToProto(dbNotes []*note) []*pb.Note {
-	var notes []*pb.Note
-	for _, note := range dbNotes {
-		notes = append(notes, convertDbNoteToProto(note))
-	}
-
-	return notes
-}
-
-func convertDbNoteToProto(dbNote *note) *pb.Note {
-	if dbNote == nil {
-		return nil
-	}
-	return &pb.Note{
-		Id:             dbNote.id,
-		ConversationId: dbNote.convoId,
-		Content:        dbNote.content,
-		Reply:          dbNote.reply,
-		Parent:         dbNote.parent,
-	}
-}
-
-func convertDbConversationListToConvo(dbConvos []convo) []pb.Conversation {
-	var convos []pb.Conversation
-	for _, convo := range dbConvos {
-		convos = append(convos, convertDbConversationToConvo(convo))
-	}
-
-	return convos
-}
-
-func convertDbConversationToConvo(dbConvo convo) pb.Conversation {
-	return pb.Conversation{
-		Id:    dbConvo.id,
-		Title: dbConvo.title,
-		Notes: convertDbNotesListToProto(dbConvo.notes),
-	}
-}
-
 func (r noteRepository) openConnection() *surrealdb.DB {
 	db, err := surrealdb.New(r.connectionUrl)
 
@@ -223,80 +162,4 @@ func (r noteRepository) signin(db *surrealdb.DB) bool {
 	}
 
 	return true
-}
-
-// Unmarshal loads a SurrealDB response into a struct.
-func unmarshal(data, v interface{}) error {
-	var ok bool
-
-	assertedData, ok := data.([]interface{})
-	if !ok {
-		return ErrInvalidResponse
-	}
-	sliceFlag := isSlice(v)
-
-	var jsonBytes []byte
-	var err error
-	if !sliceFlag && len(assertedData) > 0 {
-		jsonBytes, err = json.Marshal(assertedData[0])
-	} else {
-		jsonBytes, err = json.Marshal(assertedData)
-	}
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(jsonBytes, v)
-	if err != nil {
-		return err
-	}
-
-	return err
-}
-
-// UnmarshalRaw loads a raw SurrealQL response returned by Query into a struct. Queries that return with results will
-// return ok = true, and queries that return with no results will return ok = false.
-func unmarshalRaw(rawData, v interface{}) (ok bool, err error) {
-	var data []interface{}
-	if data, ok = rawData.([]interface{}); !ok {
-		return false, ErrInvalidResponse
-	}
-
-	var responseObj map[string]interface{}
-	if responseObj, ok = data[0].(map[string]interface{}); !ok {
-		return false, ErrInvalidResponse
-	}
-
-	var status string
-	if status, ok = responseObj["status"].(string); !ok {
-		return false, ErrInvalidResponse
-	}
-	if status != statusOK {
-		return false, ErrQuery
-	}
-
-	result := responseObj["result"]
-	if len(result.([]interface{})) == 0 {
-		return false, nil
-	}
-	err = unmarshal(result, v)
-	if err != nil {
-		return false, err
-	}
-
-	return true, nil
-}
-
-func isSlice(possibleSlice interface{}) bool {
-	slice := false
-
-	switch v := possibleSlice.(type) { //nolint:gocritic
-	default:
-		res := fmt.Sprintf("%s", v)
-		if res == "[]" || res == "&[]" || res == "*[]" {
-			slice = true
-		}
-	}
-
-	return slice
 }
