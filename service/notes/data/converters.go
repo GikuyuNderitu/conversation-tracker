@@ -4,7 +4,8 @@ import pb "atypicaldev.com/conversation/notes/api"
 
 type note struct {
 	id, convoId, content, reply, parent string
-	children                            []*note // nolint
+	// TODO(atypicaldev): Handle parse of children
+	children []*note // nolint
 }
 type convo struct {
 	id, title string
