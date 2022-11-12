@@ -132,7 +132,25 @@ func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
 }
 
 func (r noteRepository) CreateConversation(request *pb.CreateConversationRequest) *pb.Conversation {
-	return &pb.Conversation{}
+	//TODO: Validate the request (convoId populated, content populated non-empty, reply populated/empty string)
+	db := r.openConnection()
+	defer db.Close()
+
+	noteData, err := db.Create(convoTable, map[string]any{
+		"title": request.Title,
+	})
+
+	if err != nil {
+		return nil
+	}
+
+	var conversation pb.Conversation
+	err = unmarshal(noteData, &conversation)
+	if err != nil {
+		return nil
+	}
+
+	return &conversation
 }
 
 func (r noteRepository) openConnection() *surrealdb.DB {
