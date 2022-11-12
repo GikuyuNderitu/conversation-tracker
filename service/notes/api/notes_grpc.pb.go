@@ -27,6 +27,7 @@ type NotesServiceClient interface {
 	GetConversation(ctx context.Context, in *GetConversationRequest, opts ...grpc.CallOption) (*GetConversationResponse, error)
 	ListConversations(ctx context.Context, in *ListConversationsRequest, opts ...grpc.CallOption) (*ListConversationsResponse, error)
 	CreateNote(ctx context.Context, in *CreateNoteRequest, opts ...grpc.CallOption) (*CreateNoteResponse, error)
+	CreateConversation(ctx context.Context, in *CreateConversationRequest, opts ...grpc.CallOption) (*CreateConversationResponse, error)
 }
 
 type notesServiceClient struct {
@@ -82,6 +83,15 @@ func (c *notesServiceClient) CreateNote(ctx context.Context, in *CreateNoteReque
 	return out, nil
 }
 
+func (c *notesServiceClient) CreateConversation(ctx context.Context, in *CreateConversationRequest, opts ...grpc.CallOption) (*CreateConversationResponse, error) {
+	out := new(CreateConversationResponse)
+	err := c.cc.Invoke(ctx, "/notes.v1.api.NotesService/CreateConversation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NotesServiceServer is the server API for NotesService service.
 // All implementations must embed UnimplementedNotesServiceServer
 // for forward compatibility
@@ -91,6 +101,7 @@ type NotesServiceServer interface {
 	GetConversation(context.Context, *GetConversationRequest) (*GetConversationResponse, error)
 	ListConversations(context.Context, *ListConversationsRequest) (*ListConversationsResponse, error)
 	CreateNote(context.Context, *CreateNoteRequest) (*CreateNoteResponse, error)
+	CreateConversation(context.Context, *CreateConversationRequest) (*CreateConversationResponse, error)
 	mustEmbedUnimplementedNotesServiceServer()
 }
 
@@ -112,6 +123,9 @@ func (UnimplementedNotesServiceServer) ListConversations(context.Context, *ListC
 }
 func (UnimplementedNotesServiceServer) CreateNote(context.Context, *CreateNoteRequest) (*CreateNoteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateNote not implemented")
+}
+func (UnimplementedNotesServiceServer) CreateConversation(context.Context, *CreateConversationRequest) (*CreateConversationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateConversation not implemented")
 }
 func (UnimplementedNotesServiceServer) mustEmbedUnimplementedNotesServiceServer() {}
 
@@ -216,6 +230,24 @@ func _NotesService_CreateNote_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotesService_CreateConversation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateConversationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotesServiceServer).CreateConversation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/notes.v1.api.NotesService/CreateConversation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotesServiceServer).CreateConversation(ctx, req.(*CreateConversationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NotesService_ServiceDesc is the grpc.ServiceDesc for NotesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -242,6 +274,10 @@ var NotesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateNote",
 			Handler:    _NotesService_CreateNote_Handler,
+		},
+		{
+			MethodName: "CreateConversation",
+			Handler:    _NotesService_CreateConversation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
