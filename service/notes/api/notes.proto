@@ -10,6 +10,8 @@ service NotesService {
   rpc GetConversation(GetConversationRequest) returns (GetConversationResponse) {}
 
   rpc ListConversations(ListConversationsRequest) returns (ListConversationsResponse) {}
+
+  rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {}
 }
 
 message GetNotesRequest {
@@ -28,7 +30,7 @@ message Note {
   string conversation_id = 2;
 
   // If populated, the parent this note is a child of
-  Note parent = 3;
+  string parent = 3;
 
   // Required. The content of the note
   string content = 4;
@@ -61,4 +63,16 @@ message ListConversationsRequest {}
 
 message ListConversationsResponse {
   repeated Conversation conversations = 1;
+}
+
+message CreateNoteRequest {
+  string conversation_id = 1;
+
+  string content = 2;
+  
+  string reply = 3;
+}
+
+message CreateNoteResponse {
+  Note note = 1;
 }
