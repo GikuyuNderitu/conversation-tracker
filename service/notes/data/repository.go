@@ -22,6 +22,7 @@ type NotesRepository interface {
 
 	// Create operations
 	CreateNote(request *pb.CreateNoteRequest) *pb.Note
+	CreateConversation(request *pb.CreateConversationRequest) *pb.Conversation
 }
 
 type noteRepository struct {
@@ -128,6 +129,10 @@ func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
 	}
 
 	return &note
+}
+
+func (r noteRepository) CreateConversation(request *pb.CreateConversationRequest) *pb.Conversation {
+	return &pb.Conversation{}
 }
 
 func (r noteRepository) openConnection() *surrealdb.DB {
