@@ -13,14 +13,20 @@ type conversationServer struct {
 	repository data.NotesRepository
 }
 
+func (s *conversationServer) GetNote(ctx context.Context, request *pb.GetNoteRequest) (response *pb.GetNoteResponse, err error) {
+	response = &pb.GetNoteResponse{Note: s.repository.GetNote(request.NoteId)}
+	return
+}
+
 func (s *conversationServer) GetNotes(ctx context.Context, request *pb.GetNotesRequest) (response *pb.GetNotesResponse, err error) {
-	notes := s.repository.GetNote(request.GetNoteId())
+	notes := s.repository.GetNotes(request.GetNoteId())
 
 	response = &pb.GetNotesResponse{
 		Notes: notes,
 	}
 	return
 }
+
 func (s *conversationServer) GetConversation(ctx context.Context, request *pb.GetConversationRequest) (response *pb.GetConversationResponse, err error) {
 	return
 }

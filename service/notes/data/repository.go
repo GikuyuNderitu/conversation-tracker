@@ -38,7 +38,8 @@ var (
 )
 
 type NotesRepository interface {
-	GetNote(noteId string) []*pb.Note
+	GetNote(noteId string) *pb.Note
+	GetNotes(noteId string) []*pb.Note
 	ListConversations() []pb.Conversation
 	GetConversation(convoId string) *pb.Conversation
 	CreateNote(request *pb.CreateNoteRequest) *pb.Note
@@ -62,7 +63,26 @@ func NewRepository(connectionUrl, dbEnv string) noteRepository {
 	return repository
 }
 
-func (r noteRepository) GetNote(noteId string) []*pb.Note {
+func (r noteRepository) GetNote(noteId string) *pb.Note {
+	db := r.openConnection()
+	defer db.Close()
+
+	todoData, err := db.Query(todoQuery, map[string]interface{}{
+		"id": noteId,
+	})
+	if err != nil {
+		return nil
+	}
+
+	var note *pb.Note
+	_, err = unmarshalRaw(todoData, &note)
+	if err != nil {
+		return nil
+	}
+	return note
+}
+
+func (r noteRepository) GetNotes(noteId string) []*pb.Note {
 	db := r.openConnection()
 	defer db.Close()
 
