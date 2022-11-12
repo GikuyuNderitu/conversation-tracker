@@ -14,6 +14,16 @@ service NotesService {
   rpc ListConversations(ListConversationsRequest) returns (ListConversationsResponse) {}
 
   rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {}
+  
+  rpc CreateConversation(CreateConversationRequest) returns (CreateConversationResponse) {}
+}
+
+message CreateConversationRequest {
+  string title = 1;
+}
+
+message CreateConversationResponse {
+  Conversation conversation = 1;
 }
 
 message GetNoteRequest {
