@@ -4,7 +4,7 @@ import (
 	"errors"
 	"log"
 
-	pb "atypicaldev.com/conversation/notes/api"
+	pb "atypicaldev.com/conversation/api/notes"
 	"github.com/surrealdb/surrealdb.go"
 )
 

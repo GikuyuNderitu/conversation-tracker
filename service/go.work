@@ -1,3 +1,7 @@
 go 1.19
 
-use ./notes
+use (
+	./api
+	./notes
+	./notes_fe
+)

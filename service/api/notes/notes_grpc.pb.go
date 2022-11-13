@@ -4,7 +4,7 @@
 // - protoc             v3.6.1
 // source: notes.proto
 
-package api
+package notes
 
 import (
 	context "context"

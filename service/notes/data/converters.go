@@ -1,6 +1,6 @@
 package data
 
-import pb "atypicaldev.com/conversation/notes/api"
+import pb "atypicaldev.com/conversation/api/notes"
 
 type note struct {
 	id, convoId, content, reply, parent string

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "atypicaldev.com/conversation/notes/api"
+	pb "atypicaldev.com/conversation/api/notes"
 	"atypicaldev.com/conversation/notes/data"
 )
 

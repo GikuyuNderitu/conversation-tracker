@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	pb "atypicaldev.com/conversation/notes/api"
+	pb "atypicaldev.com/conversation/api/notes"
 	"atypicaldev.com/conversation/notes/data"
 )
 
