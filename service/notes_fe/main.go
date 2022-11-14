@@ -12,12 +12,7 @@ import (
 
 func main() {
 	address := ":1337"
-	http.HandleFunc("/notes", getNotes)
 	log.Fatalf("Server unhealthy: %v", http.ListenAndServe(address, createServer(dialService)))
-}
-
-func getNotes(rw http.ResponseWriter, r *http.Request) {
-
 }
 
 func dialService(logger log.Logger) (pb.NotesServiceClient, closer) {

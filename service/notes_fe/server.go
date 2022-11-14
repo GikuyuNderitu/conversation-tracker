@@ -10,6 +10,7 @@ import (
 
 	pb "atypicaldev.com/conversation/api/notes"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type clientBuilder func(log.Logger) (pb.NotesServiceClient, closer)
@@ -29,8 +30,20 @@ func createServer(builder clientBuilder) *server {
 func initGinEngine(builder clientBuilder) *gin.Engine {
 	engine := gin.Default()
 
-	// create client
-	engine.Use(func(ctx *gin.Context) {
+	// Middleware
+	engine.Use(registerNotesServiceClient(builder))
+	engine.Use(registerRouteLogger)
+
+	// Route groups
+	registerNotes(engine)
+	registerConvos(engine)
+
+	return engine
+}
+
+// Populates context with a the client to call the notes service
+func registerNotesServiceClient(builder clientBuilder) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 		l := log.New(os.Stdout,
 			"NotesServiceClientBuilder",
 			log.Lmsgprefix|log.Llongfile|log.Ldate|log.Ltime,
@@ -45,16 +58,26 @@ func initGinEngine(builder clientBuilder) *gin.Engine {
 		if err != nil {
 			log.Printf("Something bad happened closing connection to notes service: %v", err)
 		}
-	})
+	}
+}
+func registerRouteLogger(ctx *gin.Context) {
+	logger := logrus.New()
 
-	registerNotes(engine)
-	return engine
+	ctx.Set(shared.LoggerKey, logger)
+	ctx.Next()
 }
 
 func registerNotes(e *gin.Engine) {
 	group := e.Group("/notes")
 
 	group.GET("/", routes.GetNotesList)
+}
+
+func registerConvos(e *gin.Engine) {
+	group := e.Group("/convos")
+
+	group.GET("/", routes.GetConversations)
+	group.PATCH("/", routes.CreateConversation)
 }
 
 func (s server) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
