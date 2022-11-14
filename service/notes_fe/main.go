@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	pb "atypicaldev.com/conversation/api/notes"
+	"atypicaldev.com/conversation/notes_fe/middleware"
+	"github.com/sirupsen/logrus"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -12,10 +14,21 @@ import (
 
 func main() {
 	address := ":1337"
+
+	startup()
+
 	log.Fatalf("Server unhealthy: %v", http.ListenAndServe(address, createServer(dialService)))
 }
 
-func dialService(logger log.Logger) (pb.NotesServiceClient, closer) {
+func startup() {
+	_, conn := dialService(logrus.New())
+	err := conn.Close()
+	if err != nil {
+		panic("Problem while connecting to service")
+	}
+}
+
+func dialService(logger *logrus.Logger) (pb.NotesServiceClient, middleware.Closer) {
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
