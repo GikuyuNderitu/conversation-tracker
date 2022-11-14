@@ -22,7 +22,7 @@ type NotesRepository interface {
 
 	// Create operations
 	CreateNote(request *pb.CreateNoteRequest) *pb.Note
-	CreateConversation(request *pb.CreateConversationRequest) *pb.Conversation
+	CreateConversation(request *pb.CreateConversationRequest) (*pb.Conversation, error)
 }
 
 type noteRepository struct {
@@ -106,7 +106,8 @@ func (r noteRepository) ListConversations() []*pb.Conversation {
 }
 
 func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
-	//TODO(#5): Validate the request (convoId populated, content populated non-empty, reply populated/empty string)
+	// TODO(#5): Validate the request (convoId populated, content populated
+	// non-empty, reply populated/empty string)
 	db := r.openConnection()
 	defer db.Close()
 
@@ -129,25 +130,29 @@ func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
 	return &note
 }
 
-func (r noteRepository) CreateConversation(request *pb.CreateConversationRequest) *pb.Conversation {
+func (r noteRepository) CreateConversation(request *pb.CreateConversationRequest) (*pb.Conversation, error) {
 	db := r.openConnection()
 	defer db.Close()
+
+	if err := validateConvoRequest(request); err != nil {
+		return nil, err
+	}
 
 	noteData, err := db.Create(convoTable, map[string]any{
 		"title": request.Title,
 	})
 
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	var conversation pb.Conversation
 	err = unmarshal(noteData, &conversation)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	return &conversation
+	return &conversation, nil
 }
 
 func (r noteRepository) openConnection() *surrealdb.DB {

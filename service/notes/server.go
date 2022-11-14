@@ -47,8 +47,12 @@ func (s *conversationServer) CreateNote(ctx context.Context, request *pb.CreateN
 	return
 }
 
-func (s *conversationServer) CreateConversation(ctx context.Context, request *pb.CreateConversationRequest) (response *pb.CreateConversationResponse, err error) {
-	response = &pb.CreateConversationResponse{Conversation: s.repository.CreateConversation(request)}
+func (s *conversationServer) CreateConversation(
+	ctx context.Context,
+	request *pb.CreateConversationRequest,
+) (response *pb.CreateConversationResponse, err error) {
+	convo, err := s.repository.CreateConversation(request)
+	response = &pb.CreateConversationResponse{Conversation: convo}
 	return
 }
 
