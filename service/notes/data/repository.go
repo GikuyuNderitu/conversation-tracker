@@ -106,7 +106,7 @@ func (r noteRepository) ListConversations() []*pb.Conversation {
 }
 
 func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
-	//TODO: Validate the request (convoId populated, content populated non-empty, reply populated/empty string)
+	//TODO(#5): Validate the request (convoId populated, content populated non-empty, reply populated/empty string)
 	db := r.openConnection()
 	defer db.Close()
 
