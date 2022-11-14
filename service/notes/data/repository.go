@@ -17,7 +17,7 @@ type NotesRepository interface {
 	// Read operations
 	GetNote(noteId string) *pb.Note
 	GetNotes() []*pb.Note
-	ListConversations() []pb.Conversation
+	ListConversations() []*pb.Conversation
 	GetConversation(convoId string) *pb.Conversation
 
 	// Create operations
@@ -86,7 +86,7 @@ func (r noteRepository) GetConversation(convoId string) *pb.Conversation {
 	return &pb.Conversation{}
 }
 
-func (r noteRepository) ListConversations() []pb.Conversation {
+func (r noteRepository) ListConversations() []*pb.Conversation {
 	db := r.openConnection()
 	defer db.Close()
 
@@ -95,14 +95,14 @@ func (r noteRepository) ListConversations() []pb.Conversation {
 		return nil
 	}
 
-	var conversations []convo
+	var conversations []*pb.Conversation
 	err = unmarshal(convoData, &conversations)
 
 	if err != nil {
 		return nil
 	}
 
-	return convertDbConversationListToConvo(conversations)
+	return conversations
 }
 
 func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {

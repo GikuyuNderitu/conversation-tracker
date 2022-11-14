@@ -33,7 +33,11 @@ func (s *conversationServer) GetNotes(ctx context.Context, request *pb.GetNotesR
 func (s *conversationServer) GetConversation(ctx context.Context, request *pb.GetConversationRequest) (response *pb.GetConversationResponse, err error) {
 	return
 }
-func (s *conversationServer) ListConversations(ctx context.Context, request *pb.ListConversationsRequest) (response *pb.ListConversationsResponse, err error) {
+func (s *conversationServer) ListConversations(
+	ctx context.Context,
+	request *pb.ListConversationsRequest,
+) (response *pb.ListConversationsResponse, err error) {
+	response = &pb.ListConversationsResponse{Conversations: s.repository.ListConversations()}
 	return
 }
 
