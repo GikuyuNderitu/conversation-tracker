@@ -4,24 +4,19 @@ class Note {
     public id: string,
     public content: string,
   ) { }
-  static fromJson(): Note {
-    return new Note('a', 'b', 'c');
-  }
-
 }
 
 type NoteJson = { notes: Array<Note> }
 
-async function getNotes(): Promise<NoteJson> {
-  const res = await fetch('http://localhost:1337/notes');
+async function getNotes(): Promise<Array<Note>> {
+  const res = await fetch('http://localhost:1337/notes', { cache: 'no-store' },);
 
-  return JSON.parse(await res.json()) as Promise<NoteJson>;
+  return ((JSON.parse(await res.json())) as NoteJson)['notes'];
 
 }
 
 export default async function Page() {
-  const notes = (await getNotes())['notes'];
-  // console.log(res['notes'])
+  const notes = await getNotes();
   console.log(notes)
   return <div>
     <h1>Hello Conversation Page!</h1>
