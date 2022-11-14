@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 
 	pb "atypicaldev.com/conversation/api/notes"
 	"atypicaldev.com/conversation/notes/data"
@@ -19,7 +20,9 @@ func (s *conversationServer) GetNote(ctx context.Context, request *pb.GetNoteReq
 }
 
 func (s *conversationServer) GetNotes(ctx context.Context, request *pb.GetNotesRequest) (response *pb.GetNotesResponse, err error) {
-	notes := s.repository.GetNotes(request.GetNoteId())
+	notes := s.repository.GetNotes()
+
+	log.Printf("Notes from repository: %v", notes)
 
 	response = &pb.GetNotesResponse{
 		Notes: notes,

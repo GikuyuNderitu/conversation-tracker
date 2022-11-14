@@ -16,7 +16,7 @@ var (
 type NotesRepository interface {
 	// Read operations
 	GetNote(noteId string) *pb.Note
-	GetNotes(noteId string) []*pb.Note
+	GetNotes() []*pb.Note
 	ListConversations() []pb.Conversation
 	GetConversation(convoId string) *pb.Conversation
 
@@ -62,19 +62,17 @@ func (r noteRepository) GetNote(noteId string) *pb.Note {
 	return note
 }
 
-func (r noteRepository) GetNotes(noteId string) []*pb.Note {
+func (r noteRepository) GetNotes() []*pb.Note {
 	db := r.openConnection()
 	defer db.Close()
 
-	todoData, err := db.Query(todoQuery, map[string]interface{}{
-		"id": noteId,
-	})
+	todoData, err := db.Select(todoTable)
 	if err != nil {
 		return nil
 	}
 
 	var note []*pb.Note
-	_, err = unmarshalRaw(todoData, &note)
+	err = unmarshal(todoData, &note)
 	if err != nil {
 		return nil
 	}
@@ -132,7 +130,6 @@ func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
 }
 
 func (r noteRepository) CreateConversation(request *pb.CreateConversationRequest) *pb.Conversation {
-	//TODO: Validate the request (convoId populated, content populated non-empty, reply populated/empty string)
 	db := r.openConnection()
 	defer db.Close()
 

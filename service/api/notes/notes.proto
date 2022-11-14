@@ -34,9 +34,7 @@ message GetNoteResponse {
   Note note = 1;
 }
 
-message GetNotesRequest {
-  string note_id = 1;
-}
+message GetNotesRequest {}
 
 message GetNotesResponse {
   repeated Note notes = 1;
