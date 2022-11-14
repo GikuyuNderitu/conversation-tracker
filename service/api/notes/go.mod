@@ -1,4 +1,4 @@
-module atypicaldev.com/conversation/api
+module atypicaldev.com/conversation/api/notes
 
 go 1.19
 

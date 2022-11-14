@@ -2,10 +2,10 @@ module atypicaldev.com/conversation/notes
 
 go 1.19
 
-replace atypicaldev.com/conversation/api => ../api
+replace atypicaldev.com/conversation/api/notes => ../api/notes
 
 require (
-	atypicaldev.com/conversation/api v0.0.0-00010101000000-000000000000
+	atypicaldev.com/conversation/api/notes v0.0.0-00010101000000-000000000000
 	github.com/surrealdb/surrealdb.go v0.1.1
 	google.golang.org/grpc v1.50.1
 )
