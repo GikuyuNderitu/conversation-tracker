@@ -13,21 +13,21 @@ import (
 func main() {
 	address := ":1337"
 	http.HandleFunc("/notes", getNotes)
-	log.Fatalf("Server unhealthy: %v", http.ListenAndServe(address, nil))
+	log.Fatalf("Server unhealthy: %v", http.ListenAndServe(address, createServer(dialService)))
 }
 
 func getNotes(rw http.ResponseWriter, r *http.Request) {
 
 }
 
-type server struct {
-	client pb.NotesServiceClient
-}
-
-func dialService() {
+func dialService(logger log.Logger) (pb.NotesServiceClient, closer) {
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 	address := "localhost:8090"
-	grpc.Dial(address, opts...)
+	conn, err := grpc.Dial(address, opts...)
+	if err != nil {
+		logger.Fatalf("Error dialog NotesService")
+	}
+	return pb.NewNotesServiceClient(conn), conn
 }
