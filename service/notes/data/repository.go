@@ -15,13 +15,13 @@ var (
 
 type NotesRepository interface {
 	// Read operations
-	GetNote(noteId string) *pb.Note
-	GetNotes() []*pb.Note
-	ListConversations() []*pb.Conversation
-	GetConversation(convoId string) *pb.Conversation
+	GetNote(noteId string) (*pb.Note, error)
+	GetNotes() ([]*pb.Note, error)
+	ListConversations() ([]*pb.Conversation, error)
+	GetConversation(convoId string) (*pb.Conversation, error)
 
 	// Create operations
-	CreateNote(request *pb.CreateNoteRequest) *pb.Note
+	CreateNote(request *pb.CreateNoteRequest) (*pb.Note, error)
 	CreateConversation(request *pb.CreateConversationRequest) (*pb.Conversation, error)
 }
 
@@ -43,7 +43,7 @@ func NewRepository(connectionUrl, dbEnv string) noteRepository {
 	return repository
 }
 
-func (r noteRepository) GetNote(noteId string) *pb.Note {
+func (r noteRepository) GetNote(noteId string) (*pb.Note, error) {
 	db := r.openConnection()
 	defer db.Close()
 
@@ -51,61 +51,61 @@ func (r noteRepository) GetNote(noteId string) *pb.Note {
 		"id": noteId,
 	})
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	var note *pb.Note
 	_, err = unmarshalRaw(todoData, &note)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return note
+	return note, nil
 }
 
-func (r noteRepository) GetNotes() []*pb.Note {
+func (r noteRepository) GetNotes() ([]*pb.Note, error) {
 	db := r.openConnection()
 	defer db.Close()
 
 	todoData, err := db.Select(todoTable)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	var note []*pb.Note
 	err = unmarshal(todoData, &note)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return note
+	return note, nil
 }
 
-func (r noteRepository) GetConversation(convoId string) *pb.Conversation {
+func (r noteRepository) GetConversation(convoId string) (*pb.Conversation, error) {
 	db := r.openConnection()
 	defer db.Close()
 
-	return &pb.Conversation{}
+	return &pb.Conversation{}, nil
 }
 
-func (r noteRepository) ListConversations() []*pb.Conversation {
+func (r noteRepository) ListConversations() ([]*pb.Conversation, error) {
 	db := r.openConnection()
 	defer db.Close()
 
 	convoData, err := db.Select(convoTable)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	var conversations []*pb.Conversation
 	err = unmarshal(convoData, &conversations)
 
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	return conversations
+	return conversations, nil
 }
 
-func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
+func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) (*pb.Note, error) {
 	// TODO(#5): Validate the request (convoId populated, content populated
 	// non-empty, reply populated/empty string)
 	db := r.openConnection()
@@ -118,16 +118,16 @@ func (r noteRepository) CreateNote(request *pb.CreateNoteRequest) *pb.Note {
 	})
 
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	var note pb.Note
 	err = unmarshal(noteData, &note)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	return &note
+	return &note, nil
 }
 
 func (r noteRepository) CreateConversation(request *pb.CreateConversationRequest) (*pb.Conversation, error) {

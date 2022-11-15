@@ -15,12 +15,13 @@ type conversationServer struct {
 }
 
 func (s *conversationServer) GetNote(ctx context.Context, request *pb.GetNoteRequest) (response *pb.GetNoteResponse, err error) {
-	response = &pb.GetNoteResponse{Note: s.repository.GetNote(request.NoteId)}
+	note, err := s.repository.GetNote(request.NoteId)
+	response = &pb.GetNoteResponse{Note: note}
 	return
 }
 
 func (s *conversationServer) GetNotes(ctx context.Context, request *pb.GetNotesRequest) (response *pb.GetNotesResponse, err error) {
-	notes := s.repository.GetNotes()
+	notes, err := s.repository.GetNotes()
 	l := ctxlogrus.Extract(ctx).Logger
 
 	l.Printf("Notes from repository: %v", notes)
@@ -39,14 +40,14 @@ func (s *conversationServer) ListConversations(
 	request *pb.ListConversationsRequest,
 ) (response *pb.ListConversationsResponse, err error) {
 	l := ctxlogrus.Extract(ctx).Logger
-	convos := s.repository.ListConversations()
+	convos, err := s.repository.ListConversations()
 	l.Infof("Repo Conversations: %v", convos)
 	response = &pb.ListConversationsResponse{Conversations: convos}
 	return
 }
 
 func (s *conversationServer) CreateNote(ctx context.Context, request *pb.CreateNoteRequest) (response *pb.CreateNoteResponse, err error) {
-	note := s.repository.CreateNote(request)
+	note, err := s.repository.CreateNote(request)
 	response = &pb.CreateNoteResponse{Note: note}
 	return
 }
