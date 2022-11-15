@@ -33,6 +33,8 @@ func (s *conversationServer) GetNotes(ctx context.Context, request *pb.GetNotesR
 }
 
 func (s *conversationServer) GetConversation(ctx context.Context, request *pb.GetConversationRequest) (response *pb.GetConversationResponse, err error) {
+	convo, err := s.repository.GetConversation(request.GetConversationId())
+	response = &pb.GetConversationResponse{Conversation: convo}
 	return
 }
 func (s *conversationServer) ListConversations(

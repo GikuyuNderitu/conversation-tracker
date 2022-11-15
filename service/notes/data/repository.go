@@ -83,7 +83,19 @@ func (r noteRepository) GetConversation(convoId string) (*pb.Conversation, error
 	db := r.openConnection()
 	defer db.Close()
 
-	return &pb.Conversation{}, nil
+	todoData, err := db.Query(convoQuery, map[string]interface{}{
+		"id": convoId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var convo *pb.Conversation
+	_, err = unmarshalRaw(todoData, &convo)
+	if err != nil {
+		return nil, err
+	}
+	return convo, nil
 }
 
 func (r noteRepository) ListConversations() ([]*pb.Conversation, error) {
