@@ -21,8 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-	var opts []grpc.ServerOption
-	grpcServer := grpc.NewServer(opts...)
+	grpcServer := grpc.NewServer(middleWare()...)
 	reflection.Register(grpcServer)
 
 	pb.RegisterNotesServiceServer(grpcServer, newConversationServer(notesRepository))
