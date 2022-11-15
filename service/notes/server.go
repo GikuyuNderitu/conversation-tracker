@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"errors"
 
 	pb "atypicaldev.com/conversation/api/notes"
 	"atypicaldev.com/conversation/notes/data"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus/ctxlogrus"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type conversationServer struct {
@@ -34,6 +37,9 @@ func (s *conversationServer) GetNotes(ctx context.Context, request *pb.GetNotesR
 
 func (s *conversationServer) GetConversation(ctx context.Context, request *pb.GetConversationRequest) (response *pb.GetConversationResponse, err error) {
 	convo, err := s.repository.GetConversation(request.GetConversationId())
+	if errors.Is(err, data.NewQueryError(data.FindOneErr)) {
+		err = status.Errorf(codes.NotFound, err.Error())
+	}
 	response = &pb.GetConversationResponse{Conversation: convo}
 	return
 }

@@ -95,6 +95,10 @@ func (r noteRepository) GetConversation(convoId string) (*pb.Conversation, error
 	if err != nil {
 		return nil, err
 	}
+
+	if convo == nil {
+		return nil, NewQueryError(FindOneErr, convoTable)
+	}
 	return convo, nil
 }
 
