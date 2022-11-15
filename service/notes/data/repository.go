@@ -28,7 +28,6 @@ type NotesRepository interface {
 type noteRepository struct {
 	connectionUrl string
 	dbEnvironment string
-	// TODO(atypicaldev): Add logging
 }
 
 func NewRepository(connectionUrl, dbEnv string) noteRepository {
