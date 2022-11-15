@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"log"
 
 	pb "atypicaldev.com/conversation/api/notes"
 	"atypicaldev.com/conversation/notes/data"
+	"github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus/ctxlogrus"
 )
 
 type conversationServer struct {
@@ -21,8 +21,9 @@ func (s *conversationServer) GetNote(ctx context.Context, request *pb.GetNoteReq
 
 func (s *conversationServer) GetNotes(ctx context.Context, request *pb.GetNotesRequest) (response *pb.GetNotesResponse, err error) {
 	notes := s.repository.GetNotes()
+	l := ctxlogrus.Extract(ctx).Logger
 
-	log.Printf("Notes from repository: %v", notes)
+	l.Printf("Notes from repository: %v", notes)
 
 	response = &pb.GetNotesResponse{
 		Notes: notes,
@@ -37,7 +38,10 @@ func (s *conversationServer) ListConversations(
 	ctx context.Context,
 	request *pb.ListConversationsRequest,
 ) (response *pb.ListConversationsResponse, err error) {
-	response = &pb.ListConversationsResponse{Conversations: s.repository.ListConversations()}
+	l := ctxlogrus.Extract(ctx).Logger
+	convos := s.repository.ListConversations()
+	l.Infof("Repo Conversations: %v", convos)
+	response = &pb.ListConversationsResponse{Conversations: convos}
 	return
 }
 
