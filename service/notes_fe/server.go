@@ -41,6 +41,7 @@ func registerConvos(e *gin.Engine) {
 	group := e.Group("/convos")
 
 	group.GET("/", routes.GetConversations)
+	group.GET("/:id", routes.GetConversationDetail)
 	group.PATCH("/", routes.CreateConversation)
 }
 
