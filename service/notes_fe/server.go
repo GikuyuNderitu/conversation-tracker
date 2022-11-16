@@ -42,7 +42,7 @@ func registerConvos(e *gin.Engine) {
 
 	group.GET("/", routes.GetConversations)
 	group.GET("/:id", routes.GetConversationDetail)
-	group.PATCH("/", routes.CreateConversation)
+	group.POST("/", routes.CreateConversation)
 }
 
 func (s server) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
