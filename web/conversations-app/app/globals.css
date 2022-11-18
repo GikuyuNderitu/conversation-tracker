@@ -1,31 +1,39 @@
+/* @config '../tailwind.config.js'; */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+@layer base {
+  :root {
+    --primary-surface: theme(colors.slate.200);
+    --primary-color: theme(colors.sky.600);
+    --secondary-color: theme(colors.slate.800);
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+    /* Primary surface component groups */
+    --on-primary-surface: theme(colors.slate.700);
+    --on-primary-surface-text: theme(colors.slate.50);
 
-* {
-  box-sizing: border-box;
+    --accent-color: theme(colors.lime.600);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary-surface: theme(colors.gray.900);
+      --primary-color: theme(colors.sky.300);
+      --secondary-color: theme(colors.sky.50);
+
+      /* Primary surface component groups */
+      --on-primary-surface: theme(colors.slate.200);
+      --on-primary-surface-text: theme(colors.slate.700);
+
+      --accent-color: theme(colors.lime.500);
+    }
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
-  }
-
-  body {
-    color: white;
-    background: black;
   }
 }
