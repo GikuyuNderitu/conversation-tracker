@@ -38,10 +38,21 @@ module.exports = {
       'primary-surface': 'var(--primary-surface)',
       'secondary': 'var(--secondary-color)',
       'accent': 'var(--accent-color)',
-      'on-primary-surface': 'var(--on-primary-surface)',
-      'on-primary-surface-text': 'var(--on-primary-surface-text)',
+      'on-surface': 'var(--on-surface)',
+      'on-surface-text': 'var(--on-surface-text)',
+      'on-surface-btn': 'var(--on-surface-btn)',
+      'on-surface-secondary-btn': 'var(--on-surface-secondary-btn)',
+      'on-surface-btn-text': 'var(--on-surface-btn-text)',
+      'on-surface-secondary-btn-text': 'var(--on-surface-secondary-btn-text)',
     }),
+    // Keep sorted.
     extend: {
+      minHeight: {
+        'tap-target': '48px',
+      },
+      minWidth: {
+        'tap-target': '48px',
+      },
       transitionProperty: {
         'border-radius': 'border-radius'
       },

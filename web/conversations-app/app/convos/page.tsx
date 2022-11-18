@@ -1,5 +1,5 @@
 import unmarshall from "../../util/unmarshal";
-import AddConvoButton from "./add_convo_button"; './add_convo_button'
+import AddConvoButton from "./add_convo_button";
 
 class Note {
   constructor(
@@ -23,11 +23,14 @@ async function getNotes(): Promise<Array<Note>> {
 export default async function Page() {
   const notes = await getNotes();
   console.log(notes)
+
+
   return <div>
     <h1>Hello Conversation Page!</h1>
     <ul>
       {notes.map(note => <li key={note.id}>{note.content}</li>)}
     </ul>
+
     <AddConvoButton />
   </div>
 }

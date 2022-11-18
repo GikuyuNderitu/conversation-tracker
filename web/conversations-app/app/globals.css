@@ -11,8 +11,12 @@
     --secondary-color: theme(colors.slate.800);
 
     /* Primary surface component groups */
-    --on-primary-surface: theme(colors.slate.700);
-    --on-primary-surface-text: theme(colors.slate.50);
+    --on-surface: theme(colors.slate.700);
+    --on-surface-text: theme(colors.slate.50);
+    --on-surface-btn: theme(colors.teal.400);
+    --on-surface-secondary-btn: theme(colors.gray.50);
+    --on-surface-btn-text: theme(colors.slate.700);
+    --on-surface-secondary-btn-text: theme(colors.gray.50);
 
     --accent-color: theme(colors.lime.600);
   }
@@ -24,8 +28,12 @@
       --secondary-color: theme(colors.sky.50);
 
       /* Primary surface component groups */
-      --on-primary-surface: theme(colors.slate.200);
-      --on-primary-surface-text: theme(colors.slate.700);
+      --on-surface: theme(colors.slate.200);
+      --on-surface-text: theme(colors.slate.700);
+      --on-surface-btn: theme(colors.teal.600);
+      --on-surface-secondary-btn: theme(colors.gray.50);
+      --on-surface-btn-text: theme(colors.slate.50);
+      --on-surface-secondary-btn-text: theme(colors.slate.800);
 
       --accent-color: theme(colors.lime.500);
     }
