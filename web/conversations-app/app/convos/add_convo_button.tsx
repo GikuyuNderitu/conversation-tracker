@@ -9,6 +9,7 @@ export default function AddConvoButton() {
 
   return (
     <>
+      {/* TODO(GikuyuNderitu) Abstract Dialog into its own component for this project */}
       <Dialog open={open} onClose={() => setIsOpen(false)}>
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
@@ -23,6 +24,7 @@ export default function AddConvoButton() {
               will be permanently removed. This action cannot be undone.
             </p>
             <div className="p-4 flex flex-row-reverse gap-y-3">
+              {/* TODO(GikuyuNderitu) Abstract button into its own component for this project */}
               <button className="ml-4 px-4 bg-on-surface-btn text-on-surface-btn-text min-h-tap-target min-w-tap-target rounded-md" onClick={() => setIsOpen(false)}>Submit</button>
               <button className="bg-on-surface-secondary-btn text-on-surface-secondary-btn-text rounded-md" onClick={() => setIsOpen(false)}>Cancel</button>
 
