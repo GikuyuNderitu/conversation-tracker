@@ -3,14 +3,13 @@ export default function ConvoLayout({
 }: { children: React.ReactNode }) {
 
   return (
-    <div>
-      <nav className="h-16 bg-on-primary-surface flex items-center">
+    <div className="min-h-screen flex flex-col">
+      <nav className="h-16 bg-on-surface flex items-center">
         <div className="mx-6">
-          <h1 className="text-4xl text-on-primary-surface-text">Conversations</h1>
+          <h1 className="text-4xl text-on-surface-text">Conversations</h1>
         </div>
       </nav>
-      <main className="m-6">
-
+      <main className="mx-6 min-h-full grow flex items-center justify-center">
         {children}
       </main>
     </div>

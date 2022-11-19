@@ -25,6 +25,19 @@ export default async function Page() {
   console.log(notes)
 
 
+  return notes.length > 0 ? <EmptyState /> : <LoadedState notes={notes} />;
+}
+
+function EmptyState() {
+  return (
+    <div className="flex justify-center items-center min-h-full">
+      <h2 className="text-3xl text-primary">Add a conversation to get started!</h2>
+      <AddConvoButton />
+    </div>
+  )
+}
+
+function LoadedState({ notes }: { notes: Array<Note> }) {
   return <div>
     <h1>Hello Conversation Page!</h1>
     <ul>
