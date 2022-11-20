@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"net/http"
 
 	pb "atypicaldev.com/conversation/api/notes"
 	"atypicaldev.com/conversation/notes_fe/shared"
@@ -67,5 +68,5 @@ func CreateConversation(ctx *gin.Context) {
 		l.Warningf("Error parsing json response:\n%v", err)
 	}
 
-	ctx.JSON(201, json)
+	ctx.JSON(http.StatusCreated, json)
 }

@@ -1,31 +1,22 @@
 import unmarshall from "../../util/unmarshal";
 import AddConvoButton from "./add_convo_button";
+import { ConvoJson, Convo } from '../../models/convos'
 
-class Note {
-  constructor(
-    public reply: string,
-    public id: string,
-    public content: string,
-  ) { }
-}
-
-type NoteJson = { notes: Array<Note> }
-
-async function getNotes(): Promise<Array<Note>> {
+async function getConvos(): Promise<Array<Convo>> {
   const res = await fetch(
-    'http://localhost:1337/notes',
+    'http://localhost:1337/convos',
     { cache: 'no-store' },
   );
 
-  return (await unmarshall<NoteJson>(res))['notes'];
+  return (await unmarshall<ConvoJson>(res))['conversations'];
 }
 
 export default async function Page() {
-  const notes = await getNotes();
-  console.log(notes)
+  const convos = await getConvos();
+  console.log(convos)
 
 
-  return notes.length > 0 ? <EmptyState /> : <LoadedState notes={notes} />;
+  return convos.length == 0 ? <EmptyState /> : <LoadedState convos={convos} />;
 }
 
 function EmptyState() {
@@ -37,12 +28,12 @@ function EmptyState() {
   )
 }
 
-function LoadedState({ notes }: { notes: Array<Note> }) {
+function LoadedState({ convos }: { convos: Array<Convo> }) {
   return (
     <div>
       <h1>Hello Conversation Page!</h1>
       <ul>
-        {notes.map(note => <li key={note.id}>{note.content}</li>)}
+        {convos.map(convo => <li key={convo.id}>{convo.title}</li>)}
       </ul>
 
       <AddConvoButton />
