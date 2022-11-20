@@ -1,17 +1,20 @@
 import { NextApiRequest } from "next"
 import { Handler, RequestMethod } from './handler'
 
+type Router = (req: NextApiRequest) => Handler
+
 export default function router(
-  req: NextApiRequest,
   routeTable: Map<RequestMethod, Handler>
-): Handler {
-  const method: RequestMethod = (req.method as RequestMethod)
+): Router {
+  return (req: NextApiRequest) => {
+    const method: RequestMethod = (req.method as RequestMethod)
 
-  const handler = routeTable.get(method);
+    const handler = routeTable.get(method);
 
-  if (handler === undefined) throw new HandlerNotProvidedError(req);
+    if (handler === undefined) throw new HandlerNotProvidedError(req);
 
-  return handler;
+    return handler;
+  }
 }
 
 class HandlerNotProvidedError extends Error {
