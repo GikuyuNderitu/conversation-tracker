@@ -6,6 +6,19 @@ import { useState } from 'react';
 import FabButton from '../../components/fab_button';
 import FlatButton from '../../components/flat_button';
 
+async function create(title: string, refresh: () => void) {
+  // TODO(GikuyuNderitu): Handle this if there's an error status
+  await fetch(`/api/convos`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ title }),
+  });
+
+  refresh();
+}
+
 // TODO(GikuyuNderitu) Wrap this some sort of Tutorial service to inform the
 // what this button does. 
 export default function AddConvoButton() {
@@ -23,7 +36,7 @@ export default function AddConvoButton() {
     // Error message if title is empty.
 
     // TODO(GikuyuNderitu): Create an api endpoint and call to create conversation.
-    router.refresh();
+    await create(title, router.refresh);
 
     setIsOpen(false);
   }
