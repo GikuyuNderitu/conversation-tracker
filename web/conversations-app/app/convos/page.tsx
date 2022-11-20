@@ -38,12 +38,14 @@ function EmptyState() {
 }
 
 function LoadedState({ notes }: { notes: Array<Note> }) {
-  return <div>
-    <h1>Hello Conversation Page!</h1>
-    <ul>
-      {notes.map(note => <li key={note.id}>{note.content}</li>)}
-    </ul>
+  return (
+    <div>
+      <h1>Hello Conversation Page!</h1>
+      <ul>
+        {notes.map(note => <li key={note.id}>{note.content}</li>)}
+      </ul>
 
-    <AddConvoButton />
-  </div>
+      <AddConvoButton />
+    </div>
+  );
 }
