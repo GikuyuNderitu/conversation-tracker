@@ -6,4 +6,4 @@ export class Note {
   ) { }
 }
 
-export type NoteJson = { notes: Array<Note> }
+export type NotesJson = { notes: Array<Note> }

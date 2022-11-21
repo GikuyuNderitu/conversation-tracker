@@ -5,4 +5,4 @@ export class Convo {
   ) { }
 }
 
-export type ConvoJson = { conversations: Array<Convo> }
+export type ConvosJson = { conversations: Array<Convo> }

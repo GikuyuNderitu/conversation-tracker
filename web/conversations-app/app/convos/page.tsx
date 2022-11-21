@@ -1,6 +1,6 @@
 import unmarshall from "../../util/unmarshal";
 import AddConvoButton from "./add_convo_button";
-import { ConvoJson, Convo } from '../../models/convos'
+import { ConvosJson, Convo } from '../../models/convos'
 
 async function getConvos(): Promise<Array<Convo>> {
   const res = await fetch(
@@ -8,13 +8,12 @@ async function getConvos(): Promise<Array<Convo>> {
     { cache: 'no-store' },
   );
 
-  return (await unmarshall<ConvoJson>(res))['conversations'];
+  return (await unmarshall<ConvosJson>(res))['conversations'];
 }
 
 export default async function Page() {
   const convos = await getConvos();
   console.log(convos)
-
 
   return convos.length == 0 ? <EmptyState /> : <LoadedState convos={convos} />;
 }
