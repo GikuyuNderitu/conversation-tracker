@@ -1,8 +1,8 @@
-export class Convo {
+export class ConvoModel {
   constructor(
     public title: string,
     public id: string,
   ) { }
 }
 
-export type ConvosJson = { conversations: Array<Convo> }
+export type ConvoModelsJson = { conversations: Array<ConvoModel> }
