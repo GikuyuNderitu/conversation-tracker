@@ -9,7 +9,7 @@ export default function ConvoLayout({
           <h1 className="text-4xl text-on-surface-text">Conversations</h1>
         </div>
       </nav>
-      <main className="mx-6 min-h-full grow flex items-center justify-center">
+      <main className="mx-6 min-h-full flex grow">
         {children}
       </main>
     </div>

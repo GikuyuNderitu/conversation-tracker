@@ -34,6 +34,7 @@ export default function AddConvoButton() {
   async function addConversation() {
     // TODO(GikuyuNderitu): Add basic validation for empty title. Display an 
     // Error message if title is empty.
+    if (title.length == 0) return;
 
     // TODO(GikuyuNderitu): Create an api endpoint and call to create conversation.
     await create(title, router.refresh);
