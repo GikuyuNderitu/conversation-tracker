@@ -12,7 +12,7 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body className="bg-primary-surface">{children}</body>
+      <body className="bg-primary-surface scrollbar-hide">{children}</body>
     </html>
   )
 }

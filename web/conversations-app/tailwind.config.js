@@ -61,5 +61,6 @@ module.exports = {
   darkMode: {},
   plugins: [
     require('@tailwindcss/forms'),
+    require('tailwind-scrollbar-hide'),
   ],
 }
