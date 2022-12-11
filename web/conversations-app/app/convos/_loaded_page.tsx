@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import AddConvoButton from "./add_convo_button";
 import { ConvoModel } from "../../models/convos";
 import Convo from "./convo";
@@ -8,7 +9,11 @@ export default function LoadedState({ convos }: { convos: Array<ConvoModel> }) {
   return (
     <div className="w-full grid grid-flow-col shrink-0 justify-start grid-rows-6 pt-4 gap-9">
       {
-        convos.map(convo => <Convo key={convo.id} convo={convo} />)
+        convos.map(convo =>
+          <Link href={`/convos/${convo.id}`}>
+            <Convo key={convo.id} convo={convo} />
+          </Link>
+        )
       }
       <AddConvoButton />
     </div>
