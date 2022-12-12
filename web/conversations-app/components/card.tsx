@@ -1,15 +1,15 @@
 type CardProps = {
-  content?: string | undefined;
-  reply?: string | undefined;
+  children?: React.ReactNode;
+  className?: string;
 }
 
-export function Card({ content, reply }: CardProps) {
+const defaultClassName = 'min-w-[250px] p-4 bg-on-surface text-on-surface-text rounded-3xl'
+
+export default function Card({ className, children }: CardProps) {
+  const cardClass = className === undefined ? defaultClassName : defaultClassName.concat(' ', className)
   return (
-    <div className="rounded">
-      {content !== undefined ?
-        <p className="text-xl">{content}</p> : null
-      }
-      {reply !== undefined ? <p className="text-base">{reply}</p> : null}
+    <div className={cardClass}>
+      {children}
     </div>
   )
 }
