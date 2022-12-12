@@ -1,6 +1,7 @@
 import { ConvoModel, ConvoModelJson } from "../../../models/convos";
-import { Card } from '../../../components/card';
 import unmarshall, { Shaper } from "../../../util/unmarshal";
+import AddNoteButton from "./add_note_button";
+import NotesView from "./notes_view";
 
 type ConvoDetailPageParams = {
   params: { id: string },
@@ -35,6 +36,6 @@ export default async function Page({ params: { id } }: ConvoDetailPageParams) {
     <h1 className="text-2xl">
       {convo.title}
     </h1>
-    {convo.notes.map(note => <Card key={note.id} content={note.content} reply={note.reply} />)}
+    <NotesView notes={convo.notes} />
   </div>
 }
