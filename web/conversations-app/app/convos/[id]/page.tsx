@@ -32,10 +32,12 @@ export default async function Page({ params: { id } }: ConvoDetailPageParams) {
   const convo = await getConvo(id);
   console.log(convo)
 
-  return <div>
-    <h1 className="text-2xl">
-      {convo.title}
-    </h1>
-    <NotesView notes={convo.notes} />
-  </div>
+  return (
+    <div>
+      <h1 className="text-2xl">
+        {convo.title}
+      </h1>
+      <NotesView notes={convo.notes} />
+    </div>
+  )
 }
