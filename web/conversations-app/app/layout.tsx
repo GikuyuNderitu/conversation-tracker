@@ -1,4 +1,5 @@
 import './globals.css'
+import HydratedApp from './hydrated_app'
 
 export default function RootLayout({
   children,
@@ -12,7 +13,11 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body className="bg-primary-surface scrollbar-hide">{children}</body>
+      <body className="bg-primary-surface scrollbar-hide">
+        <HydratedApp>
+          {children}
+        </HydratedApp>
+      </body>
     </html>
   )
 }

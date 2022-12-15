@@ -1,19 +1,32 @@
 'use client';
 
-import { Note } from "../../../models/notes";
+import { useState } from "react";
+
 import { NewNoteWrapper } from "./notes_context";
 import AddNoteButton from "./add_note_button";
 import NoteCard from "./note_card";
 import NewNote from "./new_note";
+import { Note } from "../../../models/notes";
+import { useQuery } from "@tanstack/react-query";
+import { ConvoModel } from "../../../models/convos";
 
 type NotesViewProps = {
-  notes: Note[],
+  convo: ConvoModel,
 }
 
-export default function NotesView({ notes }: NotesViewProps) {
+async function getNotes(convo: ConvoModel): Promise<Note[]> {
+  return [];
+}
+
+export default function NotesView({ convo }: NotesViewProps) {
+  const { data } = useQuery({
+    queryKey: ['convo'],
+    queryFn: () => getNotes(convo),
+    initialData: convo.notes,
+  });
   return (
     <NewNoteWrapper>
-      {notes.map(note => <NoteCard key={note.id} content={note.content} reply={note.reply} />)}
+      {data.map(note => <NoteCard key={note.id} content={note.content} reply={note.reply} />)}
       <NewNote />
       <AddNoteButton />
     </NewNoteWrapper>

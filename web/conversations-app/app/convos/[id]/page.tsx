@@ -12,10 +12,16 @@ class ConversationShaper implements Shaper<ConvoModelJson> {
     const model = t.conversation;
 
     return {
-      conversation: new ConvoModel(model.title, model.id, model.notes),
+      conversation: {
+        title: model.title,
+        id: model.id,
+        notes: model.notes ?? [],
+      }
+      // new ConvoModel(model.title, model.id, model.notes),
     }
   }
 }
+
 
 async function getConvo(id: string): Promise<ConvoModel> {
   const res = await fetch(
@@ -37,7 +43,7 @@ export default async function Page({ params: { id } }: ConvoDetailPageParams) {
       <h1 className="text-2xl">
         {convo.title}
       </h1>
-      <NotesView notes={convo.notes} />
+      <NotesView convo={convo} />
     </div>
   )
 }
