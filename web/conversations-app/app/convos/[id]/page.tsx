@@ -1,25 +1,10 @@
 import { ConvoModel, ConvoModelJson } from "../../../models/convos";
-import unmarshall, { Shaper } from "../../../util/unmarshal";
-import AddNoteButton from "./add_note_button";
+import unmarshall from "../../../util/unmarshal";
 import NotesView from "./notes_view";
+import ConversationShaper from './conversation_shaper';
 
 type ConvoDetailPageParams = {
   params: { id: string },
-}
-
-class ConversationShaper implements Shaper<ConvoModelJson> {
-  shape(t: ConvoModelJson): ConvoModelJson {
-    const model = t.conversation;
-
-    return {
-      conversation: {
-        title: model.title,
-        id: model.id,
-        notes: model.notes ?? [],
-      }
-      // new ConvoModel(model.title, model.id, model.notes),
-    }
-  }
 }
 
 
