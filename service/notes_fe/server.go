@@ -6,6 +6,7 @@ import (
 	"atypicaldev.com/conversation/notes_fe/middleware"
 	"atypicaldev.com/conversation/notes_fe/routes"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,6 +24,8 @@ func initGinEngine(builder middleware.ClientBuilder) *gin.Engine {
 	// Middleware
 	engine.Use(middleware.RegisterRouteLogger)
 	engine.Use(middleware.RegisterNotesServiceClient(builder))
+	// TODO(GikuyuNderitu): Limit request origins.
+	engine.Use(cors.Default())
 
 	// Route groups
 	registerNotes(engine)
