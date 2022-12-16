@@ -1,6 +1,5 @@
 'use client';
 
-import { NewNoteWrapper } from "./notes_context";
 import AddNoteButton from "./add_note_button";
 import NoteCard from "./note_card";
 import NewNote from "./new_note";
@@ -39,10 +38,10 @@ export default function NotesView({ convo }: NotesViewProps) {
     initialData: convo.notes,
   });
   return (
-    <NewNoteWrapper>
+    <>
       {data.map(note => <NoteCard key={note.id} content={note.content} reply={note.reply} />)}
       <NewNote />
       <AddNoteButton />
-    </NewNoteWrapper>
+    </>
   )
 } 

@@ -1,12 +1,13 @@
 'use client'
 
-import { useContext, useState } from "react"
+import { useAtom } from "jotai";
+import { useState } from "react"
 import Card from "../../../components/card";
-import { NewNoteContext } from "./notes_context"
+import { newNoteAtom } from "./new_note_state";
 
 
 export default function NewNote() {
-  const { enabled } = useContext(NewNoteContext);
+  const [enabled] = useAtom(newNoteAtom);
   const [note, setNote] = useState('');
 
   const updateTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
