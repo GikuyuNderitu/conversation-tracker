@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package service.v1;
+
+import "conversations/v1/conversation.proto";
+
+option go_package = "atypicaldev.com/conversation/api/service/v1;servicev1";
+
+message CreateConversationRequest {
+  string title = 1;
+}
+
+message CreateConversationResponse {
+  conversations.v1.Conversation conversation = 1;
+}

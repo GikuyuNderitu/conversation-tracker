@@ -1,0 +1,11 @@
+version: v1
+plugins:
+  - plugin: go  
+    out: ../notes/gen/proto
+    opt: paths=source_relative
+  - plugin: go-grpc
+    out: ../notes/gen/proto
+    opt: paths=source_relative
+  - plugin: grpc-gateway
+    out: ../notes/gen/proto
+    opt: paths=source_relative

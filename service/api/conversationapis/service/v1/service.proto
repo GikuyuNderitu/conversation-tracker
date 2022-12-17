@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package service.v1;
+
+import "google/api/annotations.proto";
+import "service/v1/create_conversation.proto";
+import "service/v1/create_note.proto";
+import "service/v1/get_conversation.proto";
+import "service/v1/get_note.proto";
+import "service/v1/list_conversations.proto";
+
+option go_package = "atypicaldev.com/conversation/api/service/v1;servicev1";
+
+
+service ConversationService {  
+  rpc CreateConversation(CreateConversationRequest) returns (CreateConversationResponse) {
+    option (google.api.http) = {
+      post: "/v1/conversations"
+      body: "*"
+    };
+  }
+  
+  rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {
+    option (google.api.http) = {
+      post: "/v1/conversations/{conversation_id}/notes"
+      body: "*"
+    };
+  }
+
+  rpc GetConversation(GetConversationRequest) returns (GetConversationResponse) {
+    option (google.api.http) = {
+      get: "/v1/conversations/{conversation_id}"
+    };
+  }
+  
+  rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {
+    option (google.api.http) = {
+      get: "/v1/notes/{note_id}"
+    };
+  }
+  
+  rpc GetNotes(GetNotesRequest) returns (GetNotesResponse) {
+    option (google.api.http) = {
+      get: "/v1/conversations/{conversation_id}/notes"
+    };
+  }
+
+  rpc ListConversations(ListConversationsRequest) returns (ListConversationsResponse) {
+    option (google.api.http) = {
+      get: "/v1/conversations"
+    };
+  }
+}

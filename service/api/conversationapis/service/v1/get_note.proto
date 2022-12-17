@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package service.v1;
+
+import "notes/v1/note.proto";
+
+option go_package = "atypicaldev.com/conversation/api/service/v1;servicev1";
+
+message GetNotesRequest {
+  string conversation_id = 1;
+}
+
+message GetNotesResponse {
+  repeated notes.v1.Note notes = 1;
+}
+
+message GetNoteRequest {
+  string note_id = 1;
+}
+
+message GetNoteResponse {
+  notes.v1.Note note = 1;
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "atypicaldev.com/conversation/notes/gen/proto/notes/v1";
+
+package notes.v1;
+
+message Note {
+  // Required. Id of the note.
+  string id = 1;
+
+  // Required. Id of the note's conversation.
+  string conversation_id = 2;
+
+  // Optional. If populated, the parent this note is a child of
+  string parent = 3;
+
+  // Required. The content of the note
+  string content = 4;
+
+  // Optional. Annotates the content.
+  string reply = 5;
+
+  // Optional. List of notes that have spawned off of this note.
+  repeated Note children = 6;
+}

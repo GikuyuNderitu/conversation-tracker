@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package service.v1;
+
+import "notes/v1/note.proto";
+
+option go_package = "atypicaldev.com/conversation/api/service/v1;servicev1";
+
+message CreateNoteRequest {
+  // Required. The conversation associated with this note.
+  string conversation_id = 1;
+
+  // Optional. If populated, indicates that the requested created note should
+  // be associated as a child of the note with the given id. 
+  string parent_note_id = 2;
+
+  // Required. Content of the note.
+  string content = 3;
+  
+  // Optional. Added context to the content of the note.
+  string reply = 4;
+}
+
+message CreateNoteResponse {
+  // Required. The created note.
+  notes.v1.Note note = 1;
+}

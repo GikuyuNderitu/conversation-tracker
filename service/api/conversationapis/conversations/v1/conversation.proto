@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package conversations.v1;
+
+import "notes/v1/note.proto";
+
+option go_package = "atypicaldev.com/conversation/notes/gen/proto/conversations/v1";
+
+message Conversation {
+  // Required. Id of the conversation.
+  string id = 1;
+
+  // Top level list of notes in a conversation
+  repeated notes.v1.Note notes = 2;
+
+  // Title of the conversation.
+  string title = 3;
+}

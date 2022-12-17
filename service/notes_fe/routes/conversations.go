@@ -70,3 +70,26 @@ func CreateConversation(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, json)
 }
+
+// Adds a note to a given conversation.
+func AddNote(ctx *gin.Context) {
+
+	l := ctx.Value(shared.LoggerKey).(*logrus.Logger)
+	client := ctx.Value(shared.NotesServiceKey).(pb.NotesServiceClient)
+
+	req := &pb.CreateConversationRequest{}
+	ctx.ShouldBindJSON(req)
+	res, err := client.CreateConversation(context.Background(), req)
+
+	if err != nil {
+		l.Warningf("Error creating conversation, \n%v", err)
+		return
+	}
+
+	json, err := shared.ToJson(res)
+	if err != nil {
+		l.Warningf("Error parsing json response:\n%v", err)
+	}
+
+	ctx.JSON(http.StatusCreated, json)
+}

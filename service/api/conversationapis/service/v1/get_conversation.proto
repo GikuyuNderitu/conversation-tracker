@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package service.v1;
+
+import "conversations/v1/conversation.proto";
+
+option go_package = "atypicaldev.com/conversation/api/service/v1;servicev1";
+
+message GetConversationRequest {
+  // Required. The id of the requested conversation. 
+  string conversation_id = 1;
+}
+
+message GetConversationResponse {
+  // Required. The conversation for a given convo_id.
+  conversations.v1.Conversation conversation = 1;
+}
