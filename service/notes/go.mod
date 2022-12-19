@@ -2,10 +2,7 @@ module atypicaldev.com/conversation/notes
 
 go 1.19
 
-replace atypicaldev.com/conversation/api/notes => ../api/notes
-
 require (
-	atypicaldev.com/conversation/api/notes v0.0.0-00010101000000-000000000000
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.14.0
 	github.com/sirupsen/logrus v1.9.0

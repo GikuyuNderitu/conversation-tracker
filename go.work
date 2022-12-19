@@ -1,7 +1,5 @@
 go 1.19
 
 use (
-	// ./service/api/notes
 	./service/notes
-	./service/notes_fe
 )
