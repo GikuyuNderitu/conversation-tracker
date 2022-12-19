@@ -4,7 +4,7 @@ package conversations.v1;
 
 import "notes/v1/note.proto";
 
-option go_package = "atypicaldev.com/conversation/notes/gen/proto/conversations/v1";
+option go_package = "atypicaldev.com/conversation/notes/internal/proto/conversations/v1";
 
 message Conversation {
   // Required. Id of the conversation.

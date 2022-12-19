@@ -8,7 +8,7 @@ surreal start --log debug --user root --pass root -b 0.0.0.0:9021 &
 
 ./pocketbase serve --http $POCKET_BASE_ADDRESS &
 
-go run ./service/notes &
+go run ./service/notes/cmd/conversation_app &
 
-go run ./service/notes_fe &
+go run ./service/notes/cmd/conversation_app_gateway &
 wait

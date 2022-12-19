@@ -4,7 +4,7 @@
 // - protoc             (unknown)
 // source: service/v1/service.proto
 
-package servicev1
+package v1
 
 import (
 	context "context"
@@ -93,7 +93,7 @@ func (c *conversationServiceClient) ListConversations(ctx context.Context, in *L
 }
 
 // ConversationServiceServer is the server API for ConversationService service.
-// All implementations must embed UnimplementedConversationServiceServer
+// All implementations should embed UnimplementedConversationServiceServer
 // for forward compatibility
 type ConversationServiceServer interface {
 	CreateConversation(context.Context, *CreateConversationRequest) (*CreateConversationResponse, error)
@@ -102,10 +102,9 @@ type ConversationServiceServer interface {
 	GetNote(context.Context, *GetNoteRequest) (*GetNoteResponse, error)
 	GetNotes(context.Context, *GetNotesRequest) (*GetNotesResponse, error)
 	ListConversations(context.Context, *ListConversationsRequest) (*ListConversationsResponse, error)
-	mustEmbedUnimplementedConversationServiceServer()
 }
 
-// UnimplementedConversationServiceServer must be embedded to have forward compatible implementations.
+// UnimplementedConversationServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedConversationServiceServer struct {
 }
 
@@ -127,7 +126,6 @@ func (UnimplementedConversationServiceServer) GetNotes(context.Context, *GetNote
 func (UnimplementedConversationServiceServer) ListConversations(context.Context, *ListConversationsRequest) (*ListConversationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListConversations not implemented")
 }
-func (UnimplementedConversationServiceServer) mustEmbedUnimplementedConversationServiceServer() {}
 
 // UnsafeConversationServiceServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to ConversationServiceServer will

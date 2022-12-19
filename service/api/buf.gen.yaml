@@ -1,11 +1,11 @@
 version: v1
 plugins:
-  - plugin: go  
-    out: ../notes/gen/proto
+  - name: go
+    out: ../notes/internal/proto/
     opt: paths=source_relative
-  - plugin: go-grpc
-    out: ../notes/gen/proto
-    opt: paths=source_relative
-  - plugin: grpc-gateway
-    out: ../notes/gen/proto
+  - name: go-grpc
+    out: ../notes/internal/proto/
+    opt: paths=source_relative,require_unimplemented_servers=false
+  - name: grpc-gateway
+    out: ../notes/internal/proto/
     opt: paths=source_relative

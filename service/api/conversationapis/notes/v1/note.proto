@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "atypicaldev.com/conversation/notes/gen/proto/notes/v1";
+option go_package = "atypicaldev.com/conversation/notes/internal/proto/notes/v1";
 
 package notes.v1;
 

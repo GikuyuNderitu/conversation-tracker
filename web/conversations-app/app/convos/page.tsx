@@ -5,7 +5,7 @@ import LoadedState from "./_loaded_page";
 
 async function getConvos(): Promise<Array<ConvoModel>> {
   const res = await fetch(
-    'http://localhost:1337/convos',
+    'http://localhost:1337/v1/conversations',
     { cache: 'no-store' },
   );
 

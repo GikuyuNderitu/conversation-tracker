@@ -4,7 +4,7 @@ package service.v1;
 
 import "notes/v1/note.proto";
 
-option go_package = "atypicaldev.com/conversation/api/service/v1;servicev1";
+option go_package = "atypicaldev.com/conversation/notes/internal/proto/service/v1";
 
 message CreateNoteRequest {
   // Required. The conversation associated with this note.

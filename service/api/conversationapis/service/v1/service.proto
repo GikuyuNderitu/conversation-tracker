@@ -9,8 +9,7 @@ import "service/v1/get_conversation.proto";
 import "service/v1/get_note.proto";
 import "service/v1/list_conversations.proto";
 
-option go_package = "atypicaldev.com/conversation/api/service/v1;servicev1";
-
+option go_package = "atypicaldev.com/conversation/notes/internal/proto/service/v1";
 
 service ConversationService {  
   rpc CreateConversation(CreateConversationRequest) returns (CreateConversationResponse) {

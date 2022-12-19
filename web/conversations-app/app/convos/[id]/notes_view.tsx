@@ -14,7 +14,7 @@ type NotesViewProps = {
 }
 
 async function getConvo(convo: ConvoModel): Promise<ConvoModel> {
-  const res = await fetch(`http://localhost:1337/convos/${convo.id}`, {
+  const res = await fetch(`http://localhost:1337/v1/conversations/${convo.id}`, {
     method: 'GET',
     headers: {
       'Content-type': 'application/json',

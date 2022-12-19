@@ -10,7 +10,7 @@ type ConvoDetailPageParams = {
 
 async function getConvo(id: string): Promise<ConvoModel> {
   const res = await fetch(
-    `http://localhost:1337/convos/${id}`,
+    `http://localhost:1337/v1/conversations/${id}`,
     { cache: 'no-store' },
   );
 
