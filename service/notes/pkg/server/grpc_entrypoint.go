@@ -9,6 +9,7 @@ import (
 
 	service_pb "atypicaldev.com/conversation/notes/internal/proto/service/v1"
 	"atypicaldev.com/conversation/notes/pkg/data"
+	"atypicaldev.com/conversation/notes/pkg/data/postgres"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -41,7 +42,7 @@ func InitServer(config ServerConfig) {
 
 func getRepository(config ServerConfig) data.NotesRepository {
 	if *config.UsePostgres {
-		return data.NewPsqlRepository(config.PsqlUrl)
+		return postgres.NewPsqlRepository(config.PsqlUrl)
 	}
 
 	return data.NewSurrealRepository(config.SurrealDBUrl, config.SurrealDBEnv)
@@ -72,4 +73,11 @@ func InitGatewayServer(grpcServerPort, gatewayPort string) {
 
 	log.Printf("Serving Gateway on http://localhost:%s\n", gatewayPort)
 	log.Fatalln(gwServer.ListenAndServe())
+}
+
+func MigratePostgres(config ServerConfig) {
+	if config.PsqlUrl == "" {
+		log.Fatal("Require the postgres connection url to be supplied")
+	}
+	postgres.MigratePostgres(config.PsqlUrl)
 }
