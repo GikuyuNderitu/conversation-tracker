@@ -74,7 +74,10 @@ func (s *conversationServer) CreateConversation(
 	ctx context.Context,
 	request *service_pb.CreateConversationRequest,
 ) (response *service_pb.CreateConversationResponse, err error) {
+	l := ctxlogrus.Extract(ctx).Logger
+	l.Info("\n\nCreating new Conversation")
 	convo, err := s.repository.CreateConversation(request)
+	l.Infof("\n\nCreated new Conversation:\n%v\n\n", convo)
 	response = &service_pb.CreateConversationResponse{Conversation: convo}
 	return
 }

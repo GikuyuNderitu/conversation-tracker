@@ -8,7 +8,7 @@ import FlatButton from '../../components/flat_button';
 
 async function create(title: string, refresh: () => void) {
   // TODO(GikuyuNderitu): Handle this if there's an error status
-  await fetch(`/api/convos`, {
+  await fetch(`http://localhost:1337/v1/conversations`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',

@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"log"
+	"strconv"
 
 	convo_pb "atypicaldev.com/conversation/notes/internal/proto/conversations/v1"
 	notes_pb "atypicaldev.com/conversation/notes/internal/proto/notes/v1"
@@ -49,14 +50,37 @@ func (r psqlRepository) ListConversations() ([]*convo_pb.Conversation, error) {
 		return nil, err
 	}
 
-	var convos Conversation
+	var convos []Conversation
 
 	db.Find(&convos)
-	return nil, nil
+
+	conversations := make([]*convo_pb.Conversation, 0, len(convos))
+	for _, convo := range convos {
+		conversations = append(conversations, &convo_pb.Conversation{
+			Id:    strconv.Itoa(int(convo.ID)),
+			Title: convo.Title,
+		})
+	}
+	return conversations, nil
 }
 
 func (r psqlRepository) GetConversation(convoId string) (*convo_pb.Conversation, error) {
-	return nil, nil
+	id, err := strconv.Atoi(convoId)
+	if err != nil {
+		return nil, err
+	}
+
+	db, err := r.oppenConnection()
+	if err != nil {
+		return nil, err
+	}
+
+	convo := &Conversation{}
+	db.Preload("Notes").First(convo, id)
+	return &convo_pb.Conversation{
+		Id:    convoId,
+		Title: convo.Title,
+	}, nil
 }
 
 func (r psqlRepository) CreateNote(request *service_pb.CreateNoteRequest) (*notes_pb.Note, error) {
@@ -65,5 +89,22 @@ func (r psqlRepository) CreateNote(request *service_pb.CreateNoteRequest) (*note
 }
 
 func (r psqlRepository) CreateConversation(request *service_pb.CreateConversationRequest) (*convo_pb.Conversation, error) {
-	return nil, nil
+	db, err := r.oppenConnection()
+	if err != nil {
+		return nil, err
+	}
+
+	convo := Conversation{
+		Title: request.Title,
+	}
+
+	res := db.Create(&convo)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return &convo_pb.Conversation{
+		Title: convo.Title,
+		Id:    strconv.Itoa(int(convo.ID)),
+	}, nil
 }

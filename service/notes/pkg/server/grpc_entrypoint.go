@@ -42,9 +42,11 @@ func InitServer(config ServerConfig) {
 
 func getRepository(config ServerConfig) data.NotesRepository {
 	if *config.UsePostgres {
+		fmt.Println("Using postgres as datalayer")
 		return postgres.NewPsqlRepository(config.PsqlUrl)
 	}
 
+	fmt.Println("Using surrealDB as datalayer")
 	return data.NewSurrealRepository(config.SurrealDBUrl, config.SurrealDBEnv)
 }
 

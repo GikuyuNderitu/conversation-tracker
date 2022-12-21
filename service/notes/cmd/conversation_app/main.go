@@ -1,6 +1,9 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+
 	"atypicaldev.com/conversation/notes/pkg/server"
 )
 
@@ -9,13 +12,16 @@ func main() {
 	dbUrl := "ws://localhost:9021/rpc"
 	dbEnv := "test-dev"
 	serverPort := "8090"
-	postgres := "postgresql://postgres:1NSIRE2tfZFfHzsqecZN@containers-us-west-81.railway.app:6874/railway"
-
+	postgres := "postgresql://postgres:WDFbDea0MJBgEdqUXkjq@containers-us-west-128.railway.app:5573/railway"
+	usePostgres := flag.Bool("usepostgres", false, "If true, uses postgres as the data layer")
+	flag.Parse()
+	fmt.Printf("Value of flag: %v\n", *usePostgres)
 	config := server.ServerConfig{
 		ServerPort:   serverPort,
 		SurrealDBUrl: dbUrl,
 		SurrealDBEnv: dbEnv,
 		PsqlUrl:      postgres,
+		UsePostgres:  usePostgres,
 	}
 
 	server.InitServer(config)
