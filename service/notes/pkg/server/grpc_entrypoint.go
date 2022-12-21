@@ -16,7 +16,7 @@ import (
 )
 
 func InitServer(dbUrl, dbEnv, grpcServerPort string) {
-	notesRepository := data.NewRepository(dbUrl, dbEnv)
+	notesRepository := data.NewSurrealRepository(dbUrl, dbEnv)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", grpcServerPort))
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
