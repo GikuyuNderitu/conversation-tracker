@@ -13,5 +13,6 @@ type Note struct {
 	ConversationID int
 	Content        string `gorm:"not null"`
 	Reply          string
-	Note           []Note
+	Note           []Note `gorm:"foreignKey:Parent"`
+	Parent         int
 }
