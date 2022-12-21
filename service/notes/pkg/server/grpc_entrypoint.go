@@ -15,9 +15,20 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-func InitServer(dbUrl, dbEnv, grpcServerPort string) {
-	notesRepository := data.NewSurrealRepository(dbUrl, dbEnv)
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", grpcServerPort))
+type ServerConfig struct {
+	SurrealDBUrl, SurrealDBEnv string
+	PsqlUrl                    string
+	ServerPort                 string
+	UsePostgres                *bool
+}
+
+func InitServer(config ServerConfig) {
+	if config.UsePostgres == nil {
+		*config.UsePostgres = false
+	}
+
+	notesRepository := getRepository(config)
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", config.ServerPort))
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
@@ -26,6 +37,14 @@ func InitServer(dbUrl, dbEnv, grpcServerPort string) {
 
 	service_pb.RegisterConversationServiceServer(grpcServer, newServer(notesRepository))
 	log.Fatalln(grpcServer.Serve(lis))
+}
+
+func getRepository(config ServerConfig) data.NotesRepository {
+	if *config.UsePostgres {
+		return data.NewPsqlRepository(config.PsqlUrl)
+	}
+
+	return data.NewSurrealRepository(config.SurrealDBUrl, config.SurrealDBEnv)
 }
 
 func InitGatewayServer(grpcServerPort, gatewayPort string) {
