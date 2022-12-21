@@ -75,17 +75,52 @@ func (r psqlRepository) GetConversation(convoId string) (*convo_pb.Conversation,
 		return nil, err
 	}
 
-	convo := &Conversation{}
-	db.Preload("Notes").First(convo, id)
+	convo := &Conversation{ID: uint(id)}
+	res := db.Model(&Conversation{}).Preload("Notes").Find(convo)
+	if res.Error != nil {
+		return nil, res.Error
+	}
 	return &convo_pb.Conversation{
 		Id:    convoId,
 		Title: convo.Title,
+		Notes: convertNotestoPb(convo.Notes),
 	}, nil
 }
 
 func (r psqlRepository) CreateNote(request *service_pb.CreateNoteRequest) (*notes_pb.Note, error) {
-	return nil, nil
+	convoId, err := strconv.Atoi(request.ConversationId)
+	if err != nil {
+		return nil, err
+	}
+	db, err := r.oppenConnection()
+	if err != nil {
+		return nil, err
+	}
 
+	note := Note{
+		Content:        request.Content,
+		Reply:          request.Reply,
+		ConversationID: uint(convoId),
+	}
+
+	res := db.Create(&note)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	err = db.Model(&Conversation{
+		ID: uint(convoId),
+	}).Association("Notes").Append(&note)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &notes_pb.Note{
+		Content:        note.Content,
+		Reply:          note.Reply,
+		ConversationId: request.ConversationId,
+	}, nil
 }
 
 func (r psqlRepository) CreateConversation(request *service_pb.CreateConversationRequest) (*convo_pb.Conversation, error) {

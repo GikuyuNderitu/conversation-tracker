@@ -1,9 +1,15 @@
 package postgres
 
-import "gorm.io/gorm"
+import (
+	"strconv"
+
+	notes_pb "atypicaldev.com/conversation/notes/internal/proto/notes/v1"
+	"gorm.io/gorm"
+)
 
 type Conversation struct {
 	gorm.Model
+	ID    uint `gorm:"primaryKey"`
 	Title string
 	Notes []Note
 }
@@ -11,9 +17,28 @@ type Conversation struct {
 type Note struct {
 	gorm.Model
 	Conversation   Conversation
-	ConversationID int
+	ConversationID uint
 	Content        string `gorm:"not null"`
 	Reply          string
 	Note           []Note `gorm:"foreignKey:Parent"`
-	Parent         int
+	Parent         *int
+}
+
+func (n Note) toPb() *notes_pb.Note {
+	// parent := n.Parent
+	return &notes_pb.Note{
+		Content: n.Content,
+		Reply:   n.Reply,
+		// Parent:         strconv.Itoa(parent),
+		Id:             strconv.Itoa(int(n.ID)),
+		ConversationId: strconv.Itoa(int(n.ConversationID)),
+	}
+}
+
+func convertNotestoPb(notes []Note) []*notes_pb.Note {
+	pbs := make([]*notes_pb.Note, 0, len(notes))
+	for _, note := range notes {
+		pbs = append(pbs, note.toPb())
+	}
+	return pbs
 }
