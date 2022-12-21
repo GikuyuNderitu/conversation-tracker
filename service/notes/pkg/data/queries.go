@@ -5,6 +5,8 @@ import (
 )
 
 var (
-	todoQuery  = fmt.Sprintf("SELECT * FROM %s WHERE id = $id", todoTable)
-	convoQuery = fmt.Sprintf("SELECT * FROM %s WHERE id = $id", convoTable)
+	noteQuery           = fmt.Sprintf("SELECT * FROM %s WHERE id = $id", noteTable)
+	convoQuery          = fmt.Sprintf("SELECT * FROM %s WHERE id = $id", convoTable)
+	createNoteQuery     = fmt.Sprintf("CREATE %s SET content = $content, reply = $reply", noteTable)
+	relateNoteWithConvo = "RELATE $note -> belongsto -> $convo"
 )

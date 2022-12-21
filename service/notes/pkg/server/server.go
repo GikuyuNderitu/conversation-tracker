@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	service_pb "atypicaldev.com/conversation/notes/internal/proto/service/v1"
 	"atypicaldev.com/conversation/notes/pkg/data"
@@ -63,6 +64,7 @@ func (s *conversationServer) ListConversations(
 }
 
 func (s *conversationServer) CreateNote(ctx context.Context, request *service_pb.CreateNoteRequest) (response *service_pb.CreateNoteResponse, err error) {
+	fmt.Printf("Creating Note: %v\n", request)
 	note, err := s.repository.CreateNote(request)
 	response = &service_pb.CreateNoteResponse{Note: note}
 	return

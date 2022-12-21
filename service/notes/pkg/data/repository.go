@@ -48,7 +48,7 @@ func (r noteRepository) GetNote(noteId string) (*notes_pb.Note, error) {
 	db := r.openConnection()
 	defer db.Close()
 
-	todoData, err := db.Query(todoQuery, map[string]interface{}{
+	todoData, err := db.Query(noteQuery, map[string]interface{}{
 		"id": noteId,
 	})
 	if err != nil {
@@ -128,10 +128,10 @@ func (r noteRepository) CreateNote(request *service_pb.CreateNoteRequest) (*note
 	db := r.openConnection()
 	defer db.Close()
 
-	noteData, err := db.Create(todoTable, map[string]any{
-		"content":        request.Content,
-		"reply":          request.Reply,
-		"conversationId": request.ConversationId,
+	noteData, err := db.Query(createNoteQuery, map[string]any{
+		"content": request.Content,
+		"reply":   request.Reply,
+		"convo":   request.ConversationId,
 	})
 
 	if err != nil {
@@ -140,6 +140,15 @@ func (r noteRepository) CreateNote(request *service_pb.CreateNoteRequest) (*note
 
 	var note notes_pb.Note
 	err = unmarshal(noteData, &note)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = db.Query(relateNoteWithConvo, map[string]any{
+		"note":  note.GetId(),
+		"convo": request.GetConversationId(),
+	})
+
 	if err != nil {
 		return nil, err
 	}
