@@ -18,7 +18,7 @@ export default function ReplySection({ reply }: ReplySectionProps) {
       }
       {hasReply ?
         <button className="text-blue-500" onClick={() => setEditing(!editing)}>{editButtonText}</button> :
-        <button className="text-accent" onClick={() => setEditing(!editing)}>Add reply</button>}
+        <button className="text-blue-500" onClick={() => setEditing(!editing)}>Add reply</button>}
     </div>
   )
 }
