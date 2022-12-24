@@ -6,6 +6,7 @@ type ReplySectionProps = {
 }
 
 export default function ReplySection({ reply }: ReplySectionProps) {
+  /// TODO(GikuyuNderitu): Mutate and update with new note data
   const [editing, setEditing] = useState(false)
   const editButtonText = editing ? 'Alter reply' : 'Edit reply'
   const hasReply = reply !== undefined && reply !== '';
