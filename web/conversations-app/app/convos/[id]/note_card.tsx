@@ -11,6 +11,7 @@ type NoteCardProps = {
 export default function NoteCard({ content, reply }: NoteCardProps) {
   return (
     <Card className="my-8">
+      {/* TODO(GikuyuNderitu): Add mutation to delete note */}
       <CloseButton onClick={() => console.log('closing')} />
       <p className="text-xl">{content}</p>
 
