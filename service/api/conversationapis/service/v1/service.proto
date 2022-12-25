@@ -8,6 +8,7 @@ import "service/v1/create_note.proto";
 import "service/v1/get_conversation.proto";
 import "service/v1/get_note.proto";
 import "service/v1/list_conversations.proto";
+import "service/v1/update_reply.proto";
 
 option go_package = "atypicaldev.com/conversation/notes/internal/proto/service/v1";
 
@@ -41,6 +42,12 @@ service ConversationService {
   rpc GetNotes(GetNotesRequest) returns (GetNotesResponse) {
     option (google.api.http) = {
       get: "/v1/conversations/{conversation_id}/notes"
+    };
+  }
+
+  rpc UpdateReply(UpdateReplyRequest) returns (UpdateReplyResponse) {
+    option (google.api.http) = {
+      patch: "/v1/conversations/{conversation_id}/notes/{note_id}/reply"
     };
   }
 

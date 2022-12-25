@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package service.v1;
+
+import "notes/v1/note.proto";
+
+option go_package = "atypicaldev.com/conversation/notes/internal/proto/service/v1";
+
+message UpdateReplyRequest {
+  string conversation_id = 1;
+  string note_id = 2;
+  string reply = 3;
+}
+
+message UpdateReplyResponse {
+  notes.v1.Note note = 1;
+}

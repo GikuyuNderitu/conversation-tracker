@@ -27,6 +27,7 @@ type ConversationServiceClient interface {
 	GetConversation(ctx context.Context, in *GetConversationRequest, opts ...grpc.CallOption) (*GetConversationResponse, error)
 	GetNote(ctx context.Context, in *GetNoteRequest, opts ...grpc.CallOption) (*GetNoteResponse, error)
 	GetNotes(ctx context.Context, in *GetNotesRequest, opts ...grpc.CallOption) (*GetNotesResponse, error)
+	UpdateReply(ctx context.Context, in *UpdateReplyRequest, opts ...grpc.CallOption) (*UpdateReplyResponse, error)
 	ListConversations(ctx context.Context, in *ListConversationsRequest, opts ...grpc.CallOption) (*ListConversationsResponse, error)
 }
 
@@ -83,6 +84,15 @@ func (c *conversationServiceClient) GetNotes(ctx context.Context, in *GetNotesRe
 	return out, nil
 }
 
+func (c *conversationServiceClient) UpdateReply(ctx context.Context, in *UpdateReplyRequest, opts ...grpc.CallOption) (*UpdateReplyResponse, error) {
+	out := new(UpdateReplyResponse)
+	err := c.cc.Invoke(ctx, "/service.v1.ConversationService/UpdateReply", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *conversationServiceClient) ListConversations(ctx context.Context, in *ListConversationsRequest, opts ...grpc.CallOption) (*ListConversationsResponse, error) {
 	out := new(ListConversationsResponse)
 	err := c.cc.Invoke(ctx, "/service.v1.ConversationService/ListConversations", in, out, opts...)
@@ -101,6 +111,7 @@ type ConversationServiceServer interface {
 	GetConversation(context.Context, *GetConversationRequest) (*GetConversationResponse, error)
 	GetNote(context.Context, *GetNoteRequest) (*GetNoteResponse, error)
 	GetNotes(context.Context, *GetNotesRequest) (*GetNotesResponse, error)
+	UpdateReply(context.Context, *UpdateReplyRequest) (*UpdateReplyResponse, error)
 	ListConversations(context.Context, *ListConversationsRequest) (*ListConversationsResponse, error)
 }
 
@@ -122,6 +133,9 @@ func (UnimplementedConversationServiceServer) GetNote(context.Context, *GetNoteR
 }
 func (UnimplementedConversationServiceServer) GetNotes(context.Context, *GetNotesRequest) (*GetNotesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNotes not implemented")
+}
+func (UnimplementedConversationServiceServer) UpdateReply(context.Context, *UpdateReplyRequest) (*UpdateReplyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateReply not implemented")
 }
 func (UnimplementedConversationServiceServer) ListConversations(context.Context, *ListConversationsRequest) (*ListConversationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListConversations not implemented")
@@ -228,6 +242,24 @@ func _ConversationService_GetNotes_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConversationService_UpdateReply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateReplyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConversationServiceServer).UpdateReply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.v1.ConversationService/UpdateReply",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConversationServiceServer).UpdateReply(ctx, req.(*UpdateReplyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ConversationService_ListConversations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListConversationsRequest)
 	if err := dec(in); err != nil {
@@ -272,6 +304,10 @@ var ConversationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetNotes",
 			Handler:    _ConversationService_GetNotes_Handler,
+		},
+		{
+			MethodName: "UpdateReply",
+			Handler:    _ConversationService_UpdateReply_Handler,
 		},
 		{
 			MethodName: "ListConversations",
