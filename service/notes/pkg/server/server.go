@@ -81,3 +81,12 @@ func (s *conversationServer) CreateConversation(
 	response = &service_pb.CreateConversationResponse{Conversation: convo}
 	return
 }
+
+func (s *conversationServer) UpdateReply(
+	ctx context.Context,
+	request *service_pb.UpdateReplyRequest,
+) (response *service_pb.UpdateReplyResponse, err error) {
+	l := ctxlogrus.Extract(ctx).Logger
+	l.Info("\n\nUpdating reply")
+	return
+}
