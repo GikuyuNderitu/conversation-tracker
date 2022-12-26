@@ -143,3 +143,7 @@ func (r psqlRepository) CreateConversation(request *service_pb.CreateConversatio
 		Id:    strconv.Itoa(int(convo.ID)),
 	}, nil
 }
+
+func (r psqlRepository) UpdateReply(request *service_pb.UpdateReplyRequest) (*notes_pb.Note, error) {
+	panic("Unimplemented Error: Postgres Repository UpdateReply unimplemented")
+}

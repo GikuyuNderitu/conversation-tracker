@@ -165,6 +165,10 @@ func (r surrealNoteRepository) CreateConversation(request *service_pb.CreateConv
 	return &conversation, nil
 }
 
+func (r surrealNoteRepository) UpdateReply(request *service_pb.UpdateReplyRequest) (*notes_pb.Note, error) {
+	panic("Unimplemented Error: Surreal repository UpdateReply not implemented")
+}
+
 func (r surrealNoteRepository) openConnection() *surrealdb.DB {
 	db, err := surrealdb.New(r.connectionUrl)
 

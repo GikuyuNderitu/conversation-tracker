@@ -88,5 +88,7 @@ func (s *conversationServer) UpdateReply(
 ) (response *service_pb.UpdateReplyResponse, err error) {
 	l := ctxlogrus.Extract(ctx).Logger
 	l.Info("\n\nUpdating reply")
+	note, err := s.repository.UpdateReply(request)
+	response = &service_pb.UpdateReplyResponse{Note: note}
 	return
 }

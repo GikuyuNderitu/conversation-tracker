@@ -23,4 +23,5 @@ type NotesRepository interface {
 	// Create operations
 	CreateNote(request *service_pb.CreateNoteRequest) (*notes_pb.Note, error)
 	CreateConversation(request *service_pb.CreateConversationRequest) (*convo_pb.Conversation, error)
+	UpdateReply(request *service_pb.UpdateReplyRequest) (*notes_pb.Note, error)
 }
