@@ -165,6 +165,10 @@ func (r psqlRepository) UpdateReply(request *service_pb.UpdateReplyRequest) (*no
 	return note.toPb(), nil
 }
 
+func (r psqlRepository) DeleteNote(request *service_pb.DeleteNoteRequest) (*convo_pb.Conversation, error) {
+	panic("Unimplemented Error: Postgres repository DeleteNote not implemented")
+}
+
 func getDBID(requestId string) (uint, error) {
 	id, err := strconv.Atoi(requestId)
 	if err != nil {
