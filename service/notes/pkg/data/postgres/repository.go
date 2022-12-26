@@ -145,5 +145,31 @@ func (r psqlRepository) CreateConversation(request *service_pb.CreateConversatio
 }
 
 func (r psqlRepository) UpdateReply(request *service_pb.UpdateReplyRequest) (*notes_pb.Note, error) {
-	panic("Unimplemented Error: Postgres Repository UpdateReply unimplemented")
+	noteId, err := getDBID(request.NoteId)
+	if err != nil {
+		return nil, err
+	}
+
+	db, err := r.oppenConnection()
+	if err != nil {
+		return nil, err
+	}
+
+	note := &Note{ID: noteId}
+
+	res := db.First(note).Update("Reply", request.Reply)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return note.toPb(), nil
+}
+
+func getDBID(requestId string) (uint, error) {
+	id, err := strconv.Atoi(requestId)
+	if err != nil {
+		log.Printf("Error converting ID in request: Id=%s", requestId)
+		return 0, err
+	}
+	return uint(id), nil
 }
