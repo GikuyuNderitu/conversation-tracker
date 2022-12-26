@@ -176,7 +176,7 @@ func (r surrealNoteRepository) UpdateReply(request *service_pb.UpdateReplyReques
 	panic("Unimplemented Error: Surreal repository UpdateReply not implemented")
 }
 
-func (r surrealNoteRepository) DeleteNote(request *service_pb.UpdateReplyRequest) (*convo_pb.Conversation, error) {
+func (r surrealNoteRepository) DeleteNote(request *service_pb.DeleteNoteRequest) (*convo_pb.Conversation, error) {
 	panic("Unimplemented Error: Surreal repository DeleteNote not implemented")
 }
 
