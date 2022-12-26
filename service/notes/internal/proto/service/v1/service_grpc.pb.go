@@ -29,6 +29,7 @@ type ConversationServiceClient interface {
 	GetNotes(ctx context.Context, in *GetNotesRequest, opts ...grpc.CallOption) (*GetNotesResponse, error)
 	UpdateReply(ctx context.Context, in *UpdateReplyRequest, opts ...grpc.CallOption) (*UpdateReplyResponse, error)
 	ListConversations(ctx context.Context, in *ListConversationsRequest, opts ...grpc.CallOption) (*ListConversationsResponse, error)
+	DeleteNote(ctx context.Context, in *DeleteNoteRequest, opts ...grpc.CallOption) (*DeleteNoteResponse, error)
 }
 
 type conversationServiceClient struct {
@@ -102,6 +103,15 @@ func (c *conversationServiceClient) ListConversations(ctx context.Context, in *L
 	return out, nil
 }
 
+func (c *conversationServiceClient) DeleteNote(ctx context.Context, in *DeleteNoteRequest, opts ...grpc.CallOption) (*DeleteNoteResponse, error) {
+	out := new(DeleteNoteResponse)
+	err := c.cc.Invoke(ctx, "/service.v1.ConversationService/DeleteNote", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConversationServiceServer is the server API for ConversationService service.
 // All implementations should embed UnimplementedConversationServiceServer
 // for forward compatibility
@@ -113,6 +123,7 @@ type ConversationServiceServer interface {
 	GetNotes(context.Context, *GetNotesRequest) (*GetNotesResponse, error)
 	UpdateReply(context.Context, *UpdateReplyRequest) (*UpdateReplyResponse, error)
 	ListConversations(context.Context, *ListConversationsRequest) (*ListConversationsResponse, error)
+	DeleteNote(context.Context, *DeleteNoteRequest) (*DeleteNoteResponse, error)
 }
 
 // UnimplementedConversationServiceServer should be embedded to have forward compatible implementations.
@@ -139,6 +150,9 @@ func (UnimplementedConversationServiceServer) UpdateReply(context.Context, *Upda
 }
 func (UnimplementedConversationServiceServer) ListConversations(context.Context, *ListConversationsRequest) (*ListConversationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListConversations not implemented")
+}
+func (UnimplementedConversationServiceServer) DeleteNote(context.Context, *DeleteNoteRequest) (*DeleteNoteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteNote not implemented")
 }
 
 // UnsafeConversationServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -278,6 +292,24 @@ func _ConversationService_ListConversations_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConversationService_DeleteNote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteNoteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConversationServiceServer).DeleteNote(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.v1.ConversationService/DeleteNote",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConversationServiceServer).DeleteNote(ctx, req.(*DeleteNoteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConversationService_ServiceDesc is the grpc.ServiceDesc for ConversationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -312,6 +344,10 @@ var ConversationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListConversations",
 			Handler:    _ConversationService_ListConversations_Handler,
+		},
+		{
+			MethodName: "DeleteNote",
+			Handler:    _ConversationService_DeleteNote_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

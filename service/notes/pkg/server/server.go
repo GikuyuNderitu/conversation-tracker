@@ -92,3 +92,13 @@ func (s *conversationServer) UpdateReply(
 	response = &service_pb.UpdateReplyResponse{Note: note}
 	return
 }
+
+func (s *conversationServer) DeleteNote(
+	ctx context.Context,
+	request *service_pb.DeleteNoteRequest,
+) (response *service_pb.DeleteNoteResponse, err error) {
+	l := ctxlogrus.Extract(ctx).Logger
+	l.Info("\n\nEmpty implementation\n")
+	l.Info("\n\nDeleting reply")
+	return
+}
