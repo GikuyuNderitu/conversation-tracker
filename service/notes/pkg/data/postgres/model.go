@@ -16,6 +16,7 @@ type Conversation struct {
 
 type Note struct {
 	gorm.Model
+	ID             uint `gorm:"primaryKey"`
 	Conversation   Conversation
 	ConversationID uint
 	Content        string `gorm:"not null"`
