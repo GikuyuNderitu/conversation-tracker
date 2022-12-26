@@ -10,6 +10,8 @@ import (
 	service_pb "atypicaldev.com/conversation/notes/internal/proto/service/v1"
 	"atypicaldev.com/conversation/notes/pkg/data"
 	"atypicaldev.com/conversation/notes/pkg/data/postgres"
+	"atypicaldev.com/conversation/notes/pkg/data/surreal"
+
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -47,7 +49,7 @@ func getRepository(config ServerConfig) data.NotesRepository {
 	}
 
 	fmt.Println("Using surrealDB as datalayer")
-	return data.NewSurrealRepository(config.SurrealDBUrl, config.SurrealDBEnv)
+	return surreal.NewSurrealRepository(config.SurrealDBUrl, config.SurrealDBEnv)
 }
 
 func InitGatewayServer(grpcServerPort, gatewayPort string) {

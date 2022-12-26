@@ -1,4 +1,4 @@
-package data
+package surreal
 
 const (
 	convoTable           = "convos"

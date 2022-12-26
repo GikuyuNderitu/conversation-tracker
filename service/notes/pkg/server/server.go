@@ -7,6 +7,7 @@ import (
 
 	service_pb "atypicaldev.com/conversation/notes/internal/proto/service/v1"
 	"atypicaldev.com/conversation/notes/pkg/data"
+	data_errors "atypicaldev.com/conversation/notes/pkg/data/errors"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus/ctxlogrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -45,7 +46,7 @@ func (s *conversationServer) GetConversation(ctx context.Context, request *servi
 	convo, err := s.repository.GetConversation(request.GetConversationId())
 	l := ctxlogrus.Extract(ctx).Logger
 	l.Warnf("Fetching convo with id: [%s]", request.GetConversationId())
-	if errors.Is(err, data.NewQueryError(data.FindOneErr)) {
+	if errors.Is(err, data_errors.NewQueryError(data_errors.FindOneErr)) {
 		err = status.Errorf(codes.NotFound, err.Error())
 	}
 	response = &service_pb.GetConversationResponse{Conversation: convo}

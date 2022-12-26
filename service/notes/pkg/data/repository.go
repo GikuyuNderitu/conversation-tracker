@@ -1,16 +1,9 @@
 package data
 
 import (
-	"errors"
-
 	convo_pb "atypicaldev.com/conversation/notes/internal/proto/conversations/v1"
 	notes_pb "atypicaldev.com/conversation/notes/internal/proto/notes/v1"
 	service_pb "atypicaldev.com/conversation/notes/internal/proto/service/v1"
-)
-
-var (
-	ErrInvalidResponse = errors.New("invalid SurrealDB response")
-	ErrQuery           = errors.New("error occurred processing the SurrealDB query")
 )
 
 type NotesRepository interface {

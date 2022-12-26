@@ -1,14 +1,21 @@
-package data
+package surreal
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 
 	convo_pb "atypicaldev.com/conversation/notes/internal/proto/conversations/v1"
 	notes_pb "atypicaldev.com/conversation/notes/internal/proto/notes/v1"
 	service_pb "atypicaldev.com/conversation/notes/internal/proto/service/v1"
+	data_errors "atypicaldev.com/conversation/notes/pkg/data/errors"
 	"github.com/surrealdb/surrealdb.go"
+)
+
+var (
+	ErrInvalidResponse = errors.New("invalid SurrealDB response")
+	ErrQuery           = errors.New("error occurred processing the SurrealDB query")
 )
 
 type surrealNoteRepository struct {
@@ -82,7 +89,7 @@ func (r surrealNoteRepository) GetConversation(convoId string) (*convo_pb.Conver
 	}
 
 	if convo == nil {
-		return nil, NewQueryError(FindOneErr, convoTable)
+		return nil, data_errors.NewQueryError(data_errors.FindOneErr, convoTable)
 	}
 	return convo, nil
 }
