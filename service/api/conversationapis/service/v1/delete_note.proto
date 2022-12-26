@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package service.v1;
+
+import "conversations/v1/conversation.proto";
+import "notes/v1/note.proto";
+
+option go_package = "atypicaldev.com/conversation/notes/internal/proto/service/v1";
+
+message DeleteNoteRequest {
+  // Required. The id of the conversation connected of the note to be deleted.
+  string conversation_id = 1;
+
+  // Required. The id of the note to be deleted.
+  string note_id = 2;
+}
+
+message DeleteNoteResponse {
+  conversations.v1.Conversation conversation = 1;
+}

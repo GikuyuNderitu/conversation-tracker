@@ -56,4 +56,10 @@ service ConversationService {
       get: "/v1/conversations"
     };
   }
+
+  rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse) {
+    option (google.api.http) = {
+      delete: "/v1/conversations/{conversation_id}/notes/{notes_id}"
+    };
+  }
 }
