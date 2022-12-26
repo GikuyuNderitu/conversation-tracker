@@ -5,6 +5,7 @@ package service.v1;
 import "google/api/annotations.proto";
 import "service/v1/create_conversation.proto";
 import "service/v1/create_note.proto";
+import "service/v1/delete_note.proto";
 import "service/v1/get_conversation.proto";
 import "service/v1/get_note.proto";
 import "service/v1/list_conversations.proto";
