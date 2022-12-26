@@ -3,6 +3,7 @@ package postgres
 import (
 	"strconv"
 
+	convo_pb "atypicaldev.com/conversation/notes/internal/proto/conversations/v1"
 	notes_pb "atypicaldev.com/conversation/notes/internal/proto/notes/v1"
 	"gorm.io/gorm"
 )
@@ -23,6 +24,15 @@ type Note struct {
 	Reply          string
 	Note           []Note `gorm:"foreignKey:Parent"`
 	Parent         *int
+}
+
+func (c Conversation) toPb() *convo_pb.Conversation {
+	convoId := strconv.Itoa(int(c.ID))
+	return &convo_pb.Conversation{
+		Id:    convoId,
+		Title: c.Title,
+		Notes: convertNotestoPb(c.Notes),
+	}
 }
 
 func (n Note) toPb() *notes_pb.Note {
