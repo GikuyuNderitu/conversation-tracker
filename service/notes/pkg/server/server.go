@@ -99,7 +99,10 @@ func (s *conversationServer) DeleteNote(
 	request *service_pb.DeleteNoteRequest,
 ) (response *service_pb.DeleteNoteResponse, err error) {
 	l := ctxlogrus.Extract(ctx).Logger
-	l.Info("\n\nEmpty implementation\n")
-	l.Info("\n\nDeleting reply")
+	l.Info("\nEmpty implementation\n")
+	l.Info("\nDeleting reply")
+	l.Infof("\nRequest object: %v", request)
+	convo, err := s.repository.DeleteNote(request)
+	response = &service_pb.DeleteNoteResponse{Conversation: convo}
 	return
 }

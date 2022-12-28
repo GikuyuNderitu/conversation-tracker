@@ -181,9 +181,15 @@ func (r psqlRepository) DeleteNote(request *service_pb.DeleteNoteRequest) (*conv
 		return nil, err
 	}
 
-	dbConvo := Conversation{ID: convoId}
+	dbConvo := &Conversation{ID: convoId}
+	dbNote := &Note{ID: noteId}
 
-	txn := db.Delete(Note{ID: noteId}).Find(&dbConvo)
+	txn := db.Delete(dbNote)
+	if txn.Error != nil {
+		return nil, txn.Error
+	}
+
+	txn = db.Find(dbConvo)
 	if txn.Error != nil {
 		return nil, txn.Error
 	}
