@@ -38,7 +38,7 @@ export default function NewNote({ reload }: NewNoteProps) {
   const [noteContent, setNoteContent] = useState('');
   const { mutate } = useMutation({
     mutationFn: createNote,
-    onSuccess(data, variables, context) {
+    onSuccess() {
       reload();
     },
   });
