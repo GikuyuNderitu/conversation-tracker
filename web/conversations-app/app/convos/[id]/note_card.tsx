@@ -4,15 +4,30 @@ import ReplySection from "./reply_section";
 import { XCircleIcon } from '@heroicons/react/20/solid'
 
 type NoteCardProps = {
-  content: string | undefined;
+  content: string;
+  noteId: string;
+  convoId: string;
   reply?: string | undefined;
+  reload: () => void
 }
 
-export default function NoteCard({ content, reply }: NoteCardProps) {
+async function deleteNote(noteId: string, convoId: string, reload: () => void) {
+  const response = await fetch(`http://localhost:1337/v1/conversations/${convoId}/notes/${noteId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json',
+    },
+  });
+
+  if (response.status >= 200 && response.status < 300) {
+    reload();
+  }
+}
+
+export default function NoteCard({ content, reply, noteId, convoId, reload }: NoteCardProps) {
   return (
     <Card className="my-8">
-      {/* TODO(GikuyuNderitu): Add mutation to delete note */}
-      <CloseButton onClick={() => console.log('closing')} />
+      <CloseButton onClick={() => deleteNote(noteId, convoId, reload)} />
       <p className="text-xl">{content}</p>
 
       <ReplySection reply={reply} />

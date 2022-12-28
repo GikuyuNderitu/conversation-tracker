@@ -32,14 +32,28 @@ async function getNotes(convo: ConvoModel): Promise<Note[]> {
 }
 
 export default function NotesView({ convo }: NotesViewProps) {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['convo'],
     queryFn: () => getNotes(convo),
     initialData: convo.notes,
   });
+
+  const reload = () => {
+    refetch();
+  }
   return (
     <>
-      {data.map(note => <NoteCard key={note.id} content={note.content} reply={note.reply} />)}
+      {data.map(
+        note => (
+          <NoteCard
+            key={note.id}
+            convoId={convo.id}
+            noteId={note.id}
+            content={note.content}
+            reply={note.reply}
+            reload={reload} />
+        )
+      )}
       <NewNote />
       <AddNoteButton />
     </>
