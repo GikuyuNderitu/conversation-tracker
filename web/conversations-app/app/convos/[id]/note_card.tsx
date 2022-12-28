@@ -12,6 +12,7 @@ type NoteCardProps = {
 }
 
 async function deleteNote(noteId: string, convoId: string, reload: () => void) {
+  // TODO(GikuyuNderitu): Move client side fetch to common api directory or create convenience methods
   const response = await fetch(`http://localhost:1337/v1/conversations/${convoId}/notes/${noteId}`, {
     method: 'DELETE',
     headers: {
