@@ -47,17 +47,12 @@ export default function NewNote({ reload }: NewNoteProps) {
 
   const conversationId = pathname?.split('/')[2] || '';
 
-  console.log(`Pathname: ${pathname}`)
-  console.log(`ConversationId: ${conversationId}`)
-
   const updateTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     console.log(e.target.value);
     setNoteContent(e.target.value);
   }
 
   const submit = () => {
-    // TODO(GikuyuNderitu): Launch mutation
-    console.log("submitting new note")
     mutate({ content: noteContent, conversationId })
   }
 
