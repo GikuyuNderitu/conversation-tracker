@@ -54,7 +54,7 @@ export default function NotesView({ convo }: NotesViewProps) {
             reload={reload} />
         )
       )}
-      <NewNote />
+      <NewNote reload={reload} />
       <AddNoteButton />
     </>
   )

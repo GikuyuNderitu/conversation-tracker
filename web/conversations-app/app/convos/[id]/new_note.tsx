@@ -28,12 +28,19 @@ async function createNote(newNote: NewNote): Promise<Note> {
   return data as Note;
 }
 
+type NewNoteProps = {
+  reload: VoidFunction;
+}
 
-export default function NewNote() {
+
+export default function NewNote({ reload }: NewNoteProps) {
   const [enabled] = useAtom(newNoteAtom);
   const [noteContent, setNoteContent] = useState('');
   const { mutate } = useMutation({
     mutationFn: createNote,
+    onSuccess(data, variables, context) {
+      reload();
+    },
   });
 
   const pathname = usePathname();
