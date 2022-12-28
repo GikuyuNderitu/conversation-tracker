@@ -14,7 +14,6 @@ export default function handler(
 async function createConvo(req: NextApiRequest, res: NextApiResponse) {
   const title = req.body.title;
 
-  // TODO(GikuyuNderitu): Plumb this request to NotesFe
   const result = await fetch(
     'http://localhost:1337/convos', {
     method: 'POST',

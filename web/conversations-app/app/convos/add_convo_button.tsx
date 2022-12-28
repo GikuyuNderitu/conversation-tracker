@@ -36,7 +36,6 @@ export default function AddConvoButton() {
     // Error message if title is empty.
     if (title.length == 0) return;
 
-    // TODO(GikuyuNderitu): Create an api endpoint and call to create conversation.
     await create(title, router.refresh);
 
     setIsOpen(false);
